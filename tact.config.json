@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/tact-lang/tact/main/src/config/configSchema.json",
+  "projects": [
+    {
+      "name": "AppContract",
+      "path": "contracts/app_contract.tact",
+      "output": "build\\AppContract",
+      "options": {
+        "debug": true,
+        "external": false
+      },
+      "mode": "full"
+    },
+    {
+      "name": "BorrowPool",
+      "path": "contracts/app_contract.tact",
+      "output": "build\\BorrowPools",
+      "options": {
+        "debug": true,
+        "external": false
+      },
+      "mode": "full"
+    },
+    {
+      "name": "CompensationPool",
+      "path": "contracts/app_contract.tact",
+      "output": "build\\CompensationPool",
+      "options": {
+        "debug": true,
+        "external": false
+      },
+      "mode": "full"
+    }
+  ]
+}
