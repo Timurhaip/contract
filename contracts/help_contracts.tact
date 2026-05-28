@@ -147,7 +147,7 @@ contract User with Deployable {
     }
 
     receive(msg: Approve) {
-        require(self.investedIn.get(sender()) >= ton("20"), "You dont have enought rights in this pool");
+        require(self.investedIn.get(sender())!!.balance >= ton("20"), "You dont have enought rights in this pool");
         require(sender() == self.app, "Not enough rights");
         // Добавить ещё одну проверку на права в пуле
         let init: StateInit = initOf RequestContract(msg.user!!, msg.id, self.app);
@@ -163,9 +163,10 @@ contract User with Deployable {
             }.toCell(),
         });
     }
-    receive(msg: Decline){
-        require(self.investedIn.get(sender()) >= ton("20"), "You dont have enought rights in this pool");
-        let init: StateInit = initOf CompensationPool(msg.id, se);
+
+    receive(msg: Decline) {
+        require(self.investedIn.get(sender())!!.balance >= ton("20"), "You dont have enought rights in this pool");
+        let init: StateInit = initOf CompensationPool(msg.id, self.app);
         let requestContract: Address = contractAddress(init);
         let user1: Address = msg.user!!;
         send(SendParameters {
@@ -178,6 +179,7 @@ contract User with Deployable {
             }.toCell(),
         });
     }
+
     receive(msg: Borrow) {
         let init: StateInit = initOf BorrowContract(myAddress(), msg.idComp, self.app, self.debtId);
         let address: Address = contractAddress(init);

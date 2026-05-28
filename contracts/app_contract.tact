@@ -99,7 +99,7 @@ fun login(address: Address, app: Address, create: Int?): Address {
         let contractAddress: Address = contractAddress(init);
         send(SendParameters {
             to: contractAddress,
-            value: ton("0.05"),
+            value: ton("0.1"),
             mode: 1, // ← Добавить SendPayGasSeparately
             code: init.code,
             data: init.data,
@@ -403,7 +403,7 @@ contract AppContract {
     }
 
     receive(msg: Login) {
-        require(context().value > 0, "Insufficient funds for deploy");
+        require(context().value >= ton("0.1"), "Insufficient funds for deploy");
         login(sender(), myAddress(), 1);
         cashback(sender());
     }
