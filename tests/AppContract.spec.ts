@@ -1,8 +1,8 @@
 import { Blockchain, SandboxContract, TreasuryContract } from '@ton/sandbox';
 import { address, toNano, Address, Dictionary } from '@ton/core';
-import { AppContract } from '../build/AppContract/AppContract_AppContract';
-import { CompensationPool } from '../build/CompensationPool/CompensationPool_CompensationPool';
-import { BorrowPool } from '../build/BorrowPools/BorrowPool_BorrowPool';
+import { AppContract } from '../buildAppContract/AppContract_AppContract';
+import { CompensationPool } from '../buildCompensationPool/CompensationPool_CompensationPool';
+import { BorrowPool } from '../buildBorrowPools/BorrowPool_BorrowPool';
 import '@ton/test-utils';
 import { emptyPath } from '@tact-lang/compiler';
 

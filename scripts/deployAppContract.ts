@@ -1,5 +1,5 @@
 import { toNano } from '@ton/core';
-import { AppContract } from '../build/AppContract/AppContract_AppContract';
+import { AppContract } from '../buildAppContract/AppContract_AppContract';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
