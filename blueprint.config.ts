@@ -1,11 +1,10 @@
 import { Config } from '@ton/blueprint';
-import { TonClient4 } from '@ton/ton';
-import { HttpApi } from '@ton/ton/dist/client/api/HttpApi';
 
 export const config: Config = {
     network: {
-        endpoint: 'https://orbs.network', // Стабильный RPC без ошибок десинхронизации
-        type: 'testnet',
-        // Blueprint автоматически подхватит WALLET_MNEMONIC и WALLET_VERSION из .env
+        // Указываем прямой JSON-файл конфигурации тестнета
+        endpoint: 'https://ton.org/testnet-global.config.json', 
+        type: 'testnet', 
+        version: 'liteclient', // Ключевое слово для переключения Blueprint на Lite Client
     },
 };

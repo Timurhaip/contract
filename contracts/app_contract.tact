@@ -381,13 +381,12 @@ contract CompensationPool with Deployable {
 
     get fun freezed(): Int { return self.freezed }
 }
-contract AppContract {
+contract AppContract with Deployable{
     nowId: Int as uint256 = 1;
 
     init() {}
 
     receive() {
-        cashback(sender());
     }
 
     receive(msg: Time) {

@@ -1,6 +1,6 @@
 # Tact compilation report
 Contract: AppContract
-BoC Size: 5120 bytes
+BoC Size: 5187 bytes
 
 ## Structures (Structs and Messages)
 Total structures: 47
@@ -263,6 +263,8 @@ Argument: id
 graph TD
 AppContract
 AppContract --> BaseTrait
+AppContract --> Deployable
+Deployable --> BaseTrait
 ```
 
 ## Contract dependency diagram
