@@ -21,10 +21,10 @@ message Time {
 }
 message Changesum { sum: Int as coins }
 message Borrow {
-    idBorrow: Int as uint256;
-    idComp: Int as uint256;
+    idBorrow: Int as uint64;
+    idComp: Int as uint64;
     amount: Int as coins;
-    time: Int?;
+    time: Int? as uint32;
     to: Address?;
     fcc: Int as coins;
     balanceComp: Int as coins;
@@ -106,7 +106,7 @@ fun login(address: Address, app: Address, create: Int?): Address {
     if (create != null) {
         send(SendParameters {
             to: contractAddress,
-            value: ton("0.05"),
+            value: ton("0.02"),
             code: init.code,
             data: init.data,
             body: emptyCell(), // ← Явно указываем пустое тело
@@ -118,8 +118,8 @@ fun login(address: Address, app: Address, create: Int?): Address {
 fun updateFunc(address: Address, data: Cell, val1: Int, sender: Address) {
     send(SendParameters {
         to: address,
-        value: ton("0.05"),
-        mode: SendIgnoreErrors,
+        value: 0,
+        mode: SendIgnoreErrors + SendRemainingValue,
         body: ChangeVal { val: val1, newVal: data, initiator: sender }.toCell(), // Тело сообщения
     });
 }
@@ -139,6 +139,7 @@ struct CompPoolData {
     balance: Int as coins;
     earnCoff: Int as uint64;
     freezeCoff: Int as uint64;
+    balanceUserAfter: Int as coins;
 }
 // Borrow pool Contract
 contract BorrowPool with Deployable {
@@ -171,7 +172,7 @@ contract BorrowPool with Deployable {
             to: userAddress,
             value: msg.amount,
             mode: SendPayGasSeparately,
-            body: Borrow { idBorrow: msg.idBorrow, idComp: msg.idComp, amount: msg.amount, to: msg.to, time: time1, fcc: msg.fcc, balanceComp: msg.balanceComp, balanceBorrow: myBalance() }.toCell(), // Тело сообщения
+            body: Borrow { idBorrow: msg.idBorrow, idComp: msg.idComp, amount: msg.amount, to: msg.to, time: time1, fcc: msg.fcc, balanceComp: msg.balanceComp, balanceBorrow: myBalance() - context().value }.toCell(), // Тело сообщения
         });
         send(SendParameters {
             to: msg.to!!,
@@ -229,7 +230,7 @@ contract BorrowPool with Deployable {
         require(sender() == self.app, "Not enough rights!");
         let data: Cell = beginCell()
             .storeAddress(myAddress()) // первое число
-            .storeCoins(context().value - ton("0.05"))
+            .storeCoins(context().value - ton("0.01"))
             .storeUint(self.v, 32)
             .storeUint(self.acc, 32)
             .storeUint(0, 32)
@@ -237,7 +238,7 @@ contract BorrowPool with Deployable {
         let userAddress: Address = login(msg.sender!!, self.app, null);
         send(SendParameters {
             to: userAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: ChangeVal {
                 val: 3,
                 newVal: data,
@@ -262,6 +263,8 @@ contract BorrowPool with Deployable {
     get fun maxTime(): Int { return self.maxTime }
 
     get fun name(): String { return self.name }
+
+    get fun id(): Int { return self.id }
 }
 contract CompensationPool with Deployable {
     id: Int as uint32;
@@ -310,6 +313,7 @@ contract CompensationPool with Deployable {
 
     receive(msg: Approve) {
         let userAddress = login(msg.sender!!, self.app, null);
+        let balance = myBalance() - context().value;
         send(SendParameters {
             to: userAddress,
             value: 0,
@@ -318,13 +322,14 @@ contract CompensationPool with Deployable {
                 id: msg.id,
                 user: msg.user,
                 sender: msg.sender,
-                balance: myBalance(),
+                balance,
             }.toCell(),
         });
     }
 
     receive(msg: Decline) {
         let userAddress = login(msg.sender!!, self.app, null);
+        let balance = myBalance() - context().value;
         send(SendParameters {
             to: userAddress,
             value: 0,
@@ -333,7 +338,7 @@ contract CompensationPool with Deployable {
                 id: msg.id,
                 user: msg.user,
                 sender: msg.sender,
-                balance: myBalance(),
+                balance,
             }.toCell(),
         });
     }
@@ -353,9 +358,9 @@ contract CompensationPool with Deployable {
     receive(msg: Borrow) {
         require(sender() == self.app, "Not enought rights");
         require(myBalance() - (msg.amount + self.freezed) >= 0, "Not enought funds");
-        // 11 * 10^9 / 24
+        // 0.055
         let sum_freeze: Int = msg.amount + ((msg.amount * 10) / 100);
-        self.fcc = self.fcc + ((sum_freeze * SCALE) / myBalance());
+        self.fcc = self.fcc + ((sum_freeze * SCALE) / (myBalance() - context().value));
         self.freezed = self.freezed + sum_freeze;
         self.v = self.v + 1;
         let init: StateInit = initOf BorrowPool(msg.idBorrow, self.app);
@@ -366,7 +371,7 @@ contract CompensationPool with Deployable {
             to: childAddress,
             value: sum,
             mode: SendIgnoreErrors,
-            body: Borrow { idBorrow: msg.idBorrow, idComp: msg.idComp, amount: msg.amount, to: msg.to, time: self.maxTime, fcc: (msg.amount * SCALE) / myBalance(), balanceComp: myBalance(), balanceBorrow: msg.balanceBorrow }.toCell(), // Тело сообщения
+            body: Borrow { idBorrow: msg.idBorrow, idComp: msg.idComp, amount: msg.amount, to: msg.to, time: self.maxTime, fcc: (msg.amount * SCALE) / myBalance(), balanceComp: myBalance() - context().value, balanceBorrow: msg.balanceBorrow }.toCell(), // Тело сообщения
         });
     }
 
@@ -442,7 +447,7 @@ contract CompensationPool with Deployable {
         let userAddress: Address = login(msg.sender!!, self.app, null);
         send(SendParameters {
             to: userAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: ChangeVal {
                 val: 3,
                 newVal: data,
@@ -467,6 +472,8 @@ contract CompensationPool with Deployable {
     get fun maxTime(): Int { return self.maxTime }
 
     get fun name(): String { return self.name }
+
+    get fun id(): Int { return self.id }
 
     get fun freezed(): Int { return self.freezed }
 
@@ -493,16 +500,16 @@ contract AppContract {
         });
     }
 
-    // READY 1
+    // READY Comission
     receive(msg: Login) {
-        require(context().value > ton("0.05"), "Insufficient funds for deploy");
+        require(context().value > ton("0.02"), "Insufficient funds for deploy");
         login(sender(), myAddress(), 1);
         cashback(sender());
     }
 
-    //READY 1
+    //READY Comission
     receive(msg: Borrow) {
-        require(context().value >= ton("0.05"), "Insufficient funds for deploy");
+        require(context().value >= ton("0.01"), "Insufficient funds for deploy");
         let initComp: StateInit = initOf CompensationPool(msg.idComp, myAddress());
         let comppoolAddress: Address = contractAddress(initComp);
         send(SendParameters {
@@ -514,7 +521,7 @@ contract AppContract {
     }
 
     // Работа с BorrowPool
-    // Ready
+    // Ready Comission
     receive(msg: CreateBorrowPool) {
         let id: Int = self.nowId;
         self.nowId = self.nowId + 1;
@@ -523,22 +530,22 @@ contract AppContract {
         let init: StateInit = initOf BorrowPool(id, myAddress());
         // 2. Вычисляем адрес будущего контракта
         let borrowpoolAddress: Address = contractAddress(init);
-        require(balance - ton("0.1") > 0, "Insufficient funds for deploy");
+        require(balance - ton("0.03") > 0, "Insufficient funds for deploy");
         let userAddress: Address = login(sender(), myAddress(), null);
         let data: Cell = beginCell()
             .storeAddress(borrowpoolAddress) // первое число
-            .storeCoins(balance - ton("0.06"))
+            .storeCoins(balance - ton("0.01"))
             .endCell();
         send(SendParameters {
             to: userAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: ChangeVal {
                 val: 3,
                 newVal: data,
                 initiator: sender(),
             }.toCell(),
         });
-        balance = balance - ton("0.06");
+        balance = balance - ton("0.01");
         send(SendParameters {
             to: borrowpoolAddress,
             value: balance,
@@ -548,22 +555,22 @@ contract AppContract {
         });
     }
 
-    // Ready
+    // Ready Comission
     receive(msg: Withdraw) {
-        require(context().value >= ton("0.075"), "Not enought funs!");
+        require(context().value >= ton("0.02"), "Not enought funs!");
         let userAddress: Address = login(sender(), myAddress(), null);
         let init2: StateInit = initOf BorrowPool(msg.from, myAddress());
         let childAddress: Address = contractAddress(init2);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: UpdateEarn {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: userAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: Withdraw {
                 from: msg.from,
                 from2: childAddress,
@@ -573,20 +580,20 @@ contract AppContract {
         });
     }
 
-    // Ready
+    // Ready Comission
     receive(msg: Deposit) {
         let init: StateInit = initOf BorrowPool(msg.id, myAddress());
         let childAddress: Address = contractAddress(init);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: UpdateEarn {
                 sender: sender(),
             }.toCell(),
         });
         let amountToSend: Int = context().value;
-        require(amountToSend - ton("0.1") > 0, "Not enough TON sent");
-        let balance = context().value - ton("0.1");
+        require(amountToSend - ton("0.02") > 0, "Not enough TON sent");
+        let balance = context().value - ton("0.01");
         send(SendParameters {
             to: childAddress,
             value: balance,
@@ -607,22 +614,22 @@ contract AppContract {
         let init: StateInit = initOf CompensationPool(id, myAddress());
         // 2. Вычисляем адрес будущего контракта
         let compensationpoolAddress: Address = contractAddress(init);
-        require(balance - ton("0.1") > 0, "Insufficient funds for deploy");
+        require(balance - ton("0.03") > 0, "Insufficient funds for deploy");
         let userAddress: Address = login(sender(), myAddress(), null);
         let data: Cell = beginCell()
             .storeAddress(compensationpoolAddress) // первое число
-            .storeCoins(balance - ton("0.1"))
+            .storeCoins(balance - ton("0.01"))
             .endCell();
         send(SendParameters {
             to: userAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: ChangeVal {
                 val: 3,
                 newVal: data,
                 initiator: sender(),
             }.toCell(),
         });
-        balance = balance - ton("0.1");
+        balance = balance - ton("0.01");
         send(SendParameters {
             to: compensationpoolAddress,
             value: balance,
@@ -634,27 +641,27 @@ contract AppContract {
 
     // Ready
     receive(msg: WithdrawFromComp) {
-        require(context().value > ton("0.1"), "Infuccient funds!");
+        require(context().value > ton("0.03"), "Infuccient funds!");
         let userAddress: Address = login(sender(), myAddress(), null);
         let init2: StateInit = initOf CompensationPool(msg.from, myAddress());
         let childAddress: Address = contractAddress(init2);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: Update {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: UpdateEarn {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: userAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: Withdraw {
                 from: msg.from,
                 from2: childAddress,
@@ -670,21 +677,21 @@ contract AppContract {
         let childAddress: Address = contractAddress(init);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: Update {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: UpdateEarn {
                 sender: sender(),
             }.toCell(),
         });
         let amountToSend: Int = context().value;
-        require(amountToSend - ton("0.1") > 0, "Not enough TON sent");
-        amountToSend = amountToSend - ton("0.1");
+        require(amountToSend - ton("0.03") > 0, "Not enough TON sent");
+        amountToSend = amountToSend - ton("0.03");
         send(SendParameters {
             to: childAddress,
             value: amountToSend,
@@ -697,13 +704,13 @@ contract AppContract {
 
     // Ready
     receive(msg: Request) {
-        require(context().value - ton("0.1") >= 0, "Not enought funds!");
+        require(context().value - ton("0.03") >= 0, "Not enought funds!");
         let userAddress: Address = login(sender(), myAddress(), null);
         let init: StateInit = initOf CompensationPool(msg.id, myAddress());
         let childAddress: Address = contractAddress(init);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.1"),
+            value: ton("0.03"),
             body: Request {
                 id: msg.id,
                 user: userAddress,
@@ -713,27 +720,28 @@ contract AppContract {
 
     // Ready
     receive(msg: Approve) {
-        require(context().value - ton("0.1") >= 0, "Not enought funds!");
+        require(context().value - ton("0.04") >= 0, "Not enought funds!");
+        require(sender() != msg.user, "You cant approve yourself");
         let userAddress: Address = login(msg.user!!, myAddress(), null);
         let init: StateInit = initOf CompensationPool(msg.id, myAddress());
         let childAddress: Address = contractAddress(init);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: Update {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: UpdateEarn {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: childAddress,
-            value: ton("0.1"),
+            value: ton("0.02"),
             body: Approve {
                 id: msg.id,
                 user: userAddress,
@@ -745,27 +753,28 @@ contract AppContract {
 
     // Ready
     receive(msg: Decline) {
-        require(context().value - ton("0.1") >= 0, "Not enought funds!");
+        require(context().value - ton("0.04") >= 0, "Not enought funds!");
+        require(sender() != msg.user, "You cant decline yourself");
         let userAddress: Address = login(sender(), myAddress(), null);
         let init: StateInit = initOf CompensationPool(msg.id, myAddress());
         let childAddress: Address = contractAddress(init);
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: Update {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: childAddress,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: UpdateEarn {
                 sender: sender(),
             }.toCell(),
         });
         send(SendParameters {
             to: childAddress,
-            value: ton("0.1"),
+            value: ton("0.02"),
             body: Decline {
                 id: msg.id,
                 user: userAddress,
