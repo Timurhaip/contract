@@ -7,7 +7,7 @@
       "output": "build\\AppContract",
       "options": {
         "debug": true,
-        "external": false
+        "external": true
       },
       "mode": "full"
     },

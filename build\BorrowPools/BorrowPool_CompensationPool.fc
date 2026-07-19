@@ -1,0 +1,1240 @@
+#pragma version =0.4.6;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+;; BorrowPool_CompensationPool.headers.fc
+;;
+;; Header files for CompensationPool
+;; NOTE: declarations are sorted for optimal order
+;;
+
+;; __tact_store_address_opt
+builder __tact_store_address_opt(builder b, slice address) inline;
+
+;; __tact_not_null
+forall X -> X __tact_not_null(X x) impure inline;
+
+;; __tact_context_get
+(int, slice, int, slice) __tact_context_get() inline;
+
+;; __tact_context_get_sender
+slice __tact_context_get_sender() inline;
+
+;; __tact_dict_set_code
+cell __tact_dict_set_code(cell dict, int id, cell code) inline;
+
+;; __tact_dict_get_code
+cell __tact_dict_get_code(cell dict, int id) inline;
+
+;; __tact_dict_get_int_coins
+int __tact_dict_get_int_coins(cell d, int kl, int k) inline;
+
+;; __tact_dict_set_int_coins
+(cell, ()) __tact_dict_set_int_coins(cell d, int kl, int k, int v) inline;
+
+;; $DeployOk$_store
+builder $DeployOk$_store(builder build_0, (int) v) inline;
+
+;; $DeployOk$_store_cell
+cell $DeployOk$_store_cell((int) v, builder b) inline;
+
+;; $ChangeVal$_store
+builder $ChangeVal$_store(builder build_0, (int, cell, slice) v) inline;
+
+;; $ChangeVal$_store_cell
+cell $ChangeVal$_store_cell((int, cell, slice) v, builder b) inline;
+
+;; $Overdue$_store
+builder $Overdue$_store(builder build_0, (slice, int, int) v) inline;
+
+;; $Overdue$_store_cell
+cell $Overdue$_store_cell((slice, int, int) v, builder b) inline;
+
+;; $Borrow$_store
+builder $Borrow$_store(builder build_0, (int, int, int, int, slice, int, int, int) v) inline;
+
+;; $Borrow$_store_cell
+cell $Borrow$_store_cell((int, int, int, int, slice, int, int, int) v, builder b) inline;
+
+;; $Approve$_store
+builder $Approve$_store(builder build_0, (int, slice, slice, int) v) inline;
+
+;; $Approve$_store_cell
+cell $Approve$_store_cell((int, slice, slice, int) v, builder b) inline;
+
+;; $Decline$_store
+builder $Decline$_store(builder build_0, (int, slice, slice, int) v) inline;
+
+;; $Decline$_store_cell
+cell $Decline$_store_cell((int, slice, slice, int) v, builder b) inline;
+
+;; $CompensationPool$_store
+builder $CompensationPool$_store(builder build_0, (int, slice, int, slice, int, int, int, int, cell, int) v) inline;
+
+;; $CompensationPool$_load
+(slice, ((int, slice, int, slice, int, int, int, int, cell, int))) $CompensationPool$_load(slice sc_0) inline;
+
+;; $Context$_get_value
+_ $Context$_get_value((int, slice, int, slice) v) inline;
+
+;; $RequestContract$init$_store
+builder $RequestContract$init$_store(builder build_0, (slice, int, slice) v) inline;
+
+;; $User$init$_store
+builder $User$init$_store(builder build_0, (slice, slice) v) inline;
+
+;; $BorrowPool$init$_store
+builder $BorrowPool$init$_store(builder build_0, (int, slice) v) inline;
+
+;; $CompensationPool$init$_load
+(slice, ((int, slice))) $CompensationPool$init$_load(slice sc_0) inline;
+
+;; $CompensationPool$_contract_init
+(int, slice, int, slice, int, int, int, int, cell, int) $CompensationPool$_contract_init(int $id, slice $app) impure inline;
+
+;; $CompensationPool$_contract_load
+(int, slice, int, slice, int, int, int, int, cell, int) $CompensationPool$_contract_load() impure inline;
+
+;; $CompensationPool$_contract_store
+() $CompensationPool$_contract_store((int, slice, int, slice, int, int, int, int, cell, int) v) impure inline;
+
+;; $Cell$_fun_asSlice
+slice $Cell$_fun_asSlice(cell $self) impure inline;
+
+;; $global_newAddress
+slice $global_newAddress(int $chain, int $hash) impure inline;
+
+;; $global_contractAddressExt
+slice $global_contractAddressExt(int $chain, cell $code, cell $data) impure inline;
+
+;; $global_contractAddress
+slice $global_contractAddress((cell, cell) $s) impure inline;
+
+;; $SendParameters$_constructor_to_value_code_data_body
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_code_data_body(slice $to, int $value, cell $code, cell $data, cell $body) inline;
+
+;; $User$_init_child
+(cell, cell) $User$_init_child(slice $addressUser, slice $app) inline_ref;
+
+;; $global_login
+slice $global_login(slice $address, slice $app, int $create) impure inline_ref;
+
+;; $SendParameters$_constructor_to_value_mode_body
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_mode_body(slice $to, int $value, int $mode, cell $body) inline;
+
+;; $ChangeVal$_constructor_val_newVal_initiator
+((int, cell, slice)) $ChangeVal$_constructor_val_newVal_initiator(int $val, cell $newVal, slice $initiator) inline;
+
+;; $global_updateFunc
+() $global_updateFunc(slice $address, cell $data, int $val1, slice $sender) impure inline_ref;
+
+;; $RequestContract$_init_child
+(cell, cell) $RequestContract$_init_child(slice $addressUser, int $pool, slice $app) inline_ref;
+
+;; $MessageParameters$_constructor_bounce_to_value_mode_body
+((int, cell, int, slice, int)) $MessageParameters$_constructor_bounce_to_value_mode_body(int $bounce, slice $to, int $value, int $mode, cell $body) inline;
+
+;; $BorrowPool$_init_child
+(cell, cell) $BorrowPool$_init_child(int $id, slice $app) inline_ref;
+
+;; $CompensationPool$_fun_balance
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_balance((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref;
+
+;; $CompensationPool$_fun_maxTime
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_maxTime((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref;
+
+;; $CompensationPool$_fun_name
+((int, slice, int, slice, int, int, int, int, cell, int), slice) $CompensationPool$_fun_name((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref;
+
+;; $CompensationPool$_fun_id
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_id((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref;
+
+;; $CompensationPool$_fun_freezed
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_freezed((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref;
+
+;; $CompensationPool$_fun_fcc
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_fcc((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref;
+
+;; $CompensationPool$_fun_notify
+((int, slice, int, slice, int, int, int, int, cell, int), ()) $CompensationPool$_fun_notify((int, slice, int, slice, int, int, int, int, cell, int) $self, cell $body) impure inline;
+
+;; $Overdue$_constructor_address_sum_id
+((slice, int, int)) $Overdue$_constructor_address_sum_id(slice $address, int $sum, int $id) inline;
+
+;; $Approve$_constructor_id_user_sender_balance
+((int, slice, slice, int)) $Approve$_constructor_id_user_sender_balance(int $id, slice $user, slice $sender, int $balance) inline;
+
+;; $Decline$_constructor_id_user_sender_balance
+((int, slice, slice, int)) $Decline$_constructor_id_user_sender_balance(int $id, slice $user, slice $sender, int $balance) inline;
+
+;; $SendParameters$_constructor_to_value_code_data
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_code_data(slice $to, int $value, cell $code, cell $data) inline;
+
+;; $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow
+((int, int, int, int, slice, int, int, int)) $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow(int $idBorrow, int $idComp, int $amount, slice $to, int $time, int $fcc, int $balanceComp, int $balanceBorrow) inline;
+
+;; $SendParameters$_constructor_to_value_body
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_body(slice $to, int $value, cell $body) inline;
+
+;; $SendParameters$_constructor_to_value
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value(slice $to, int $value) inline;
+
+;; $DeployOk$_constructor_queryId
+((int)) $DeployOk$_constructor_queryId(int $queryId) inline;
+
+
+;; BorrowPool_CompensationPool.stdlib.fc
+global (int, slice, int, slice) __tact_context;
+global slice __tact_context_sender;
+global cell __tact_child_contract_codes;
+global int __tact_randomized;
+
+(slice, slice) __tact_load_address_opt(slice cs) asm """
+
+            b{00} SDBEGINSQ
+            IF:<{
+              PUSHNULL
+            }>ELSE<{
+              LDMSGADDR
+              SWAP
+            }>
+
+""";
+
+builder __tact_store_addr_none(builder b) asm "b{00} STSLICECONST";
+
+builder __tact_store_address_opt(builder b, slice address) inline {
+    if (null?(address)) {
+        return __tact_store_addr_none(b);
+    } else {
+        return b.store_slice(address);
+    }
+}
+
+forall X -> X __tact_not_null(X x) impure inline {
+    throw_if(128, null?(x)); return x;
+}
+
+(int, slice, int, slice) __tact_context_get() inline {
+    return __tact_context;
+}
+
+slice __tact_context_get_sender() inline {
+    return __tact_context_sender;
+}
+
+cell __tact_dict_set_code(cell dict, int id, cell code) inline {
+    return udict_set_ref(dict, 16, id, code);
+}
+
+cell __tact_dict_get_code(cell dict, int id) inline {
+    var (data, ok) = udict_get_ref?(dict, 16, id);
+    throw_unless(135, ok);
+    return data;
+}
+
+int __tact_dict_get_int_coins(cell d, int kl, int k) inline {
+    var (r, ok) = idict_get?(d, kl, k);
+    if (ok) {
+        return r~load_coins();
+    } else {
+        return null();
+    }
+}
+
+(cell, ()) __tact_dict_set_int_coins(cell d, int kl, int k, int v) inline {
+    if (null?(v)) {
+        var (r, ok) = idict_delete?(d, kl, k);
+        return (r, ());
+    } else {
+        return (idict_set_builder(d, kl, k, begin_cell().store_coins(v)), ());
+    }
+}
+
+builder $global_beginCell() impure asm """
+    NEWC
+""";
+
+cell $global_emptyCell() impure asm """
+    <b b> PUSHREF // Pure Fift: "<b" creates a builder, "b>" turns it into a cell at compile time
+""";
+
+int $global_contractHash(cell $code, cell $data) impure asm """
+    s0 PUSH HASHCU // `data` hash
+    s2 PUSH HASHCU // `code` hash
+    SWAP2
+    CDEPTH         // `data` depth
+    SWAP
+    CDEPTH         // `code` depth
+    131380 INT     // (2 << 16) | (1 << 8) | 0x34
+
+    // Group 2: Composition of the Builder
+    NEWC
+    24 STU  // store refs_descriptor | bits_descriptor | data
+    16 STU  // store depth_descriptor for `code`
+    16 STU  // store depth_descriptor for `data`
+    256 STU // store `code` hash
+    256 STU // store `data` hash
+
+    // Group 3: SHA256 hash of the resulting Builder
+    ONE HASHEXT_SHA256
+""";
+
+slice $Slice$_fun_asAddressUnsafe(slice $self) impure asm "NOP";
+
+slice $Cell$_fun_beginParse(cell $self) impure asm """
+    CTOS
+""";
+
+slice $Cell$_fun_asSlice(cell $self) impure inline {
+    var ($self) = $self;
+    return $Cell$_fun_beginParse($self);
+}
+
+cell $Builder$_fun_endCell(builder $self) impure asm """
+    ENDC
+""";
+
+slice $global_newAddress(int $chain, int $hash) impure inline {
+    return $Slice$_fun_asAddressUnsafe($Cell$_fun_asSlice($Builder$_fun_endCell(store_uint(store_int(store_uint($global_beginCell(), 4, 3), $chain, 8), $hash, 256))));
+}
+
+slice $global_contractAddressExt(int $chain, cell $code, cell $data) impure inline {
+    int $hash = $global_contractHash($code, $data);
+    return $global_newAddress($chain, $hash);
+}
+
+slice $global_contractAddress((cell, cell) $s) impure inline {
+    var (($s'code, $s'data)) = $s;
+    return $global_contractAddressExt(0, $s'code, $s'data);
+}
+
+slice $global_myAddress() impure asm """
+    MYADDR
+""";
+
+int $global_myBalance() impure asm """
+    BALANCE FIRST
+""";
+
+() $global_nativeReserve(int $amount, int $mode) impure asm """
+    RAWRESERVE
+""";
+
+() $global_message((int, cell, int, slice, int) $params) impure asm """
+    NEWC
+    b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+    1 STI               // store `bounce`
+    b{000} STSLICECONST // store bounced = false and src = addr_none
+    STSLICE             // store `to`
+    SWAP
+    STGRAMS             // store `value`
+    106 PUSHINT         // 1 + 4 + 4 + 64 + 32 + 1
+    STZEROES
+    // → Stack state
+    // s0: Builder
+    // s1: `body`
+    // s2: `mode`
+    STDICT
+    ENDC
+    SWAP
+    SENDRAWMSG
+""";
+
+() $global_send((int, cell, cell, cell, int, slice, int) $params) impure asm """
+    NEWC
+    b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+    1 STI               // store `bounce`
+    b{000} STSLICECONST // store bounced = false and src = addr_none
+    STSLICE             // store `to`
+    SWAP
+    STGRAMS             // store `value`
+    105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+    STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+    // → Stack state
+    // s0: Builder
+    // s1: `data`
+    // s2: `code`
+    // s3: `body`
+    // s4: `mode`
+
+    // Group 2: Placing the Builder after code and data, then checking those for nullability
+    s2 XCHG0
+    DUP2
+    ISNULL
+    SWAP
+    ISNULL
+    AND
+    // → Stack state
+    // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+    // s1: `code`
+    // s2: `data`
+    // s3: Builder
+    // s4: `body`
+    // s5: `mode`
+
+    // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+    <{
+        DROP2 // drop `data` and `code`, since either of those is null
+        b{0} STSLICECONST
+    }> PUSHCONT
+
+    // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+    <{
+        // _ split_depth:(Maybe (## 5))
+        //   special:(Maybe TickTock)
+        //   code:(Maybe ^Cell)
+        //   data:(Maybe ^Cell)
+        //   library:(Maybe ^Cell)
+        // = StateInit;
+        ROT                // place message Builder on top
+        b{10} STSLICECONST // store Maybe = true, Either = false
+        // Start composing inlined StateInit
+        b{00} STSLICECONST // store split_depth and special first
+        STDICT             // store code
+        STDICT             // store data
+        b{0} STSLICECONST  // store library
+    }> PUSHCONT
+
+    // Group 3: IFELSE that does the branching shown above
+    IFELSE
+    // → Stack state
+    // s0: Builder
+    // s1: null or StateInit
+    // s2: `body`
+    // s3: `mode`
+
+    // Group 4: Finalizing the message
+    STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+    ENDC
+    // → Stack state
+    // s0: Cell
+    // s1: `mode`
+
+    // Group 5: Sending the message, with `mode` on top
+    SWAP
+    SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+""";
+
+builder $Builder$_fun_storeCoins(builder $self, int $value) impure asm """
+    STVARUINT16
+""";
+
+builder $Builder$_fun_storeAddress(builder $self, slice $address) impure asm """
+    STSLICER
+""";
+
+int $Cell$_fun_hash(cell $self) impure asm """
+    HASHCU
+""";
+
+((int, slice, int, slice, int, int, int, int, cell, int), ()) $CompensationPool$_fun_notify((int, slice, int, slice, int, int, int, int, cell, int) $self, cell $body) impure inline {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    slice $to = __tact_context_get_sender();
+    int $bounce = false;
+    if (false) {
+        int $balance = $global_myBalance();
+        int $balanceBeforeMessage = ($balance - $Context$_get_value(__tact_context_get()));
+        if (($balanceBeforeMessage < 0)) {
+            $global_nativeReserve(0, 0);
+            $global_message($MessageParameters$_constructor_bounce_to_value_mode_body($bounce, $to, 0, 130, $body));
+            return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), ());
+        }
+    }
+    $global_message($MessageParameters$_constructor_bounce_to_value_mode_body($bounce, $to, 0, 66, $body));
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), ());
+}
+
+;; BorrowPool_CompensationPool.constants.fc
+;; String ""
+slice __gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7() asm """
+    B{b5ee9c724101010100020000004cacb9cd} B>boc <s PUSHSLICE
+""";
+
+;; BorrowPool_CompensationPool.storage.fc
+;;
+;; Type: Context
+;; TLB: _ bounceable:bool sender:address value:int257 raw:^slice = Context
+;;
+
+_ $Context$_get_value((int, slice, int, slice) v) inline {
+    var (v'bounceable, v'sender, v'value, v'raw) = v;
+    return v'value;
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell value:int257 to:address bounce:bool = SendParameters
+;;
+
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_code_data_body(slice $to, int $value, cell $code, cell $data, cell $body) inline {
+    return (0, $body, $code, $data, $value, $to, true);
+}
+
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_mode_body(slice $to, int $value, int $mode, cell $body) inline {
+    return ($mode, $body, null(), null(), $value, $to, true);
+}
+
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_code_data(slice $to, int $value, cell $code, cell $data) inline {
+    return (0, null(), $code, $data, $value, $to, true);
+}
+
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_body(slice $to, int $value, cell $body) inline {
+    return (0, $body, null(), null(), $value, $to, true);
+}
+
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value(slice $to, int $value) inline {
+    return (0, null(), null(), null(), $value, $to, true);
+}
+
+;;
+;; Type: MessageParameters
+;; TLB: _ mode:int257 body:Maybe ^cell value:int257 to:address bounce:bool = MessageParameters
+;;
+
+((int, cell, int, slice, int)) $MessageParameters$_constructor_bounce_to_value_mode_body(int $bounce, slice $to, int $value, int $mode, cell $body) inline {
+    return ($mode, $body, $value, $to, $bounce);
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v, builder b) inline {
+    return $DeployOk$_store(b, v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int $queryId) inline {
+    return ($queryId);
+}
+
+;;
+;; Type: ChangeVal
+;; Header: 0xd02d0ac5
+;; TLB: change_val#d02d0ac5 val:uint8 newVal:^cell initiator:address = ChangeVal
+;;
+
+builder $ChangeVal$_store(builder build_0, (int, cell, slice) v) inline {
+    var (v'val, v'newVal, v'initiator) = v;
+    build_0 = store_uint(build_0, 3492612805, 32);
+    build_0 = build_0.store_uint(v'val, 8);
+    build_0 = build_0.store_ref(v'newVal);
+    build_0 = build_0.store_slice(v'initiator);
+    return build_0;
+}
+
+cell $ChangeVal$_store_cell((int, cell, slice) v, builder b) inline {
+    return $ChangeVal$_store(b, v).end_cell();
+}
+
+((int, cell, slice)) $ChangeVal$_constructor_val_newVal_initiator(int $val, cell $newVal, slice $initiator) inline {
+    return ($val, $newVal, $initiator);
+}
+
+;;
+;; Type: Overdue
+;; Header: 0xd3c8679f
+;; TLB: overdue#d3c8679f address:address sum:coins id:uint32 = Overdue
+;;
+
+builder $Overdue$_store(builder build_0, (slice, int, int) v) inline {
+    var (v'address, v'sum, v'id) = v;
+    build_0 = store_uint(build_0, 3553126303, 32);
+    build_0 = build_0.store_slice(v'address);
+    build_0 = build_0.store_varuint16(v'sum);
+    build_0 = build_0.store_uint(v'id, 32);
+    return build_0;
+}
+
+cell $Overdue$_store_cell((slice, int, int) v, builder b) inline {
+    return $Overdue$_store(b, v).end_cell();
+}
+
+((slice, int, int)) $Overdue$_constructor_address_sum_id(slice $address, int $sum, int $id) inline {
+    return ($address, $sum, $id);
+}
+
+;;
+;; Type: Borrow
+;; Header: 0x1d37ca59
+;; TLB: borrow#1d37ca59 idBorrow:uint64 idComp:uint64 amount:coins time:Maybe uint32 to:address fcc:coins balanceComp:coins balanceBorrow:coins = Borrow
+;;
+
+builder $Borrow$_store(builder build_0, (int, int, int, int, slice, int, int, int) v) inline {
+    var (v'idBorrow, v'idComp, v'amount, v'time, v'to, v'fcc, v'balanceComp, v'balanceBorrow) = v;
+    build_0 = store_uint(build_0, 490195545, 32);
+    build_0 = build_0.store_uint(v'idBorrow, 64);
+    build_0 = build_0.store_uint(v'idComp, 64);
+    build_0 = build_0.store_varuint16(v'amount);
+    build_0 = ~ null?(v'time) ? build_0.store_int(true, 1).store_uint(v'time, 32) : build_0.store_int(false, 1);
+    build_0 = __tact_store_address_opt(build_0, v'to);
+    build_0 = build_0.store_varuint16(v'fcc);
+    build_0 = build_0.store_varuint16(v'balanceComp);
+    build_0 = build_0.store_varuint16(v'balanceBorrow);
+    return build_0;
+}
+
+cell $Borrow$_store_cell((int, int, int, int, slice, int, int, int) v, builder b) inline {
+    return $Borrow$_store(b, v).end_cell();
+}
+
+((int, int, int, int, slice, int, int, int)) $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow(int $idBorrow, int $idComp, int $amount, slice $to, int $time, int $fcc, int $balanceComp, int $balanceBorrow) inline {
+    return ($idBorrow, $idComp, $amount, $time, $to, $fcc, $balanceComp, $balanceBorrow);
+}
+
+;;
+;; Type: Approve
+;; Header: 0x5f54bbeb
+;; TLB: approve#5f54bbeb id:int257 user:address sender:address balance:coins = Approve
+;;
+
+builder $Approve$_store(builder build_0, (int, slice, slice, int) v) inline {
+    var (v'id, v'user, v'sender, v'balance) = v;
+    build_0 = store_uint(build_0, 1599388651, 32);
+    build_0 = build_0.store_int(v'id, 257);
+    build_0 = __tact_store_address_opt(build_0, v'user);
+    build_0 = __tact_store_address_opt(build_0, v'sender);
+    build_0 = build_0.store_varuint16(v'balance);
+    return build_0;
+}
+
+cell $Approve$_store_cell((int, slice, slice, int) v, builder b) inline {
+    return $Approve$_store(b, v).end_cell();
+}
+
+((int, slice, slice, int)) $Approve$_constructor_id_user_sender_balance(int $id, slice $user, slice $sender, int $balance) inline {
+    return ($id, $user, $sender, $balance);
+}
+
+;;
+;; Type: Decline
+;; Header: 0x2cb63203
+;; TLB: decline#2cb63203 id:int257 user:address sender:address balance:coins = Decline
+;;
+
+builder $Decline$_store(builder build_0, (int, slice, slice, int) v) inline {
+    var (v'id, v'user, v'sender, v'balance) = v;
+    build_0 = store_uint(build_0, 750137859, 32);
+    build_0 = build_0.store_int(v'id, 257);
+    build_0 = __tact_store_address_opt(build_0, v'user);
+    build_0 = __tact_store_address_opt(build_0, v'sender);
+    build_0 = build_0.store_varuint16(v'balance);
+    return build_0;
+}
+
+cell $Decline$_store_cell((int, slice, slice, int) v, builder b) inline {
+    return $Decline$_store(b, v).end_cell();
+}
+
+((int, slice, slice, int)) $Decline$_constructor_id_user_sender_balance(int $id, slice $user, slice $sender, int $balance) inline {
+    return ($id, $user, $sender, $balance);
+}
+
+;;
+;; Type: RequestContract
+;; TLB: _ address:address pool:uint256 app:address = RequestContract
+;;
+
+builder $RequestContract$init$_store(builder build_0, (slice, int, slice) v) inline {
+    var (v'addressUser, v'pool, v'app) = v;
+    build_0 = build_0.store_slice(v'addressUser);
+    build_0 = build_0.store_uint(v'pool, 256);
+    build_0 = build_0.store_slice(v'app);
+    return build_0;
+}
+
+(cell, cell) $RequestContract$_init_child(slice $addressUser, int $pool, slice $app) inline_ref {
+    ;; Build init code cell
+
+    slice sc' = __tact_child_contract_codes.begin_parse();
+    cell source = sc'~load_dict();
+    ;; Contract Code: RequestContract
+    cell init_code = __tact_dict_get_code(source, 42506);
+
+    ;; Build init data cell
+    cell contracts = new_dict();
+
+    ;; Contract Code: User
+    cell code_57900 = __tact_dict_get_code(source, 57900);
+    contracts = __tact_dict_set_code(contracts, 57900, code_57900);
+
+    ;; Contract Code: CompensationPool
+    contracts = __tact_dict_set_code(contracts, 21538, my_code());
+
+    ;; Contract Code: BorrowPool
+    cell code_33759 = __tact_dict_get_code(source, 33759);
+    contracts = __tact_dict_set_code(contracts, 33759, code_33759);
+
+    ;; Contract Code: BorrowContract
+    cell code_55931 = __tact_dict_get_code(source, 55931);
+    contracts = __tact_dict_set_code(contracts, 55931, code_55931);
+
+    builder b = begin_cell();
+    b = b.store_builder_ref(begin_cell().store_dict(contracts));
+    b = b.store_int(false, 1);
+    b = $RequestContract$init$_store(b, ($addressUser, $pool, $app));
+    return (init_code, b.end_cell());
+}
+
+;;
+;; Type: User
+;; TLB: _ addressUser:address rating:int257 app:address debts:dict<uint32, ^Debt{sum:coins,timetoreturn:uint32,borrowPool:uint256,compPool:uint256,commision:coins,fcc:coins}> investedIn:dict<address, ^CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint64,freezeCoff:uint64,balanceUserAfter:coins}> compensationPools:dict<uint256, address> debtId:uint32 = User
+;;
+
+builder $User$init$_store(builder build_0, (slice, slice) v) inline {
+    var (v'addressUser, v'app) = v;
+    build_0 = build_0.store_slice(v'addressUser);
+    build_0 = build_0.store_slice(v'app);
+    return build_0;
+}
+
+(cell, cell) $User$_init_child(slice $addressUser, slice $app) inline_ref {
+    ;; Build init code cell
+
+    slice sc' = __tact_child_contract_codes.begin_parse();
+    cell source = sc'~load_dict();
+    ;; Contract Code: User
+    cell init_code = __tact_dict_get_code(source, 57900);
+
+    ;; Build init data cell
+    cell contracts = new_dict();
+
+    ;; Contract Code: CompensationPool
+    contracts = __tact_dict_set_code(contracts, 21538, my_code());
+
+    ;; Contract Code: RequestContract
+    cell code_42506 = __tact_dict_get_code(source, 42506);
+    contracts = __tact_dict_set_code(contracts, 42506, code_42506);
+
+    ;; Contract Code: BorrowContract
+    cell code_55931 = __tact_dict_get_code(source, 55931);
+    contracts = __tact_dict_set_code(contracts, 55931, code_55931);
+
+    ;; Contract Code: BorrowPool
+    cell code_33759 = __tact_dict_get_code(source, 33759);
+    contracts = __tact_dict_set_code(contracts, 33759, code_33759);
+
+    builder b = begin_cell();
+    b = b.store_builder_ref(begin_cell().store_dict(contracts));
+    b = b.store_int(false, 1);
+    b = $User$init$_store(b, ($addressUser, $app));
+    return (init_code, b.end_cell());
+}
+
+;;
+;; Type: BorrowPool
+;; TLB: _ id:uint32 name:^string maxTime:uint32 app:address acc:coins v:uint32 borrowBalance:dict<int, coins> = BorrowPool
+;;
+
+builder $BorrowPool$init$_store(builder build_0, (int, slice) v) inline {
+    var (v'id, v'app) = v;
+    build_0 = build_0.store_int(v'id, 257);
+    build_0 = build_0.store_slice(v'app);
+    return build_0;
+}
+
+(cell, cell) $BorrowPool$_init_child(int $id, slice $app) inline_ref {
+    ;; Build init code cell
+
+    slice sc' = __tact_child_contract_codes.begin_parse();
+    cell source = sc'~load_dict();
+    ;; Contract Code: BorrowPool
+    cell init_code = __tact_dict_get_code(source, 33759);
+
+    ;; Build init data cell
+    cell contracts = new_dict();
+
+    ;; Contract Code: CompensationPool
+    contracts = __tact_dict_set_code(contracts, 21538, my_code());
+
+    ;; Contract Code: User
+    cell code_57900 = __tact_dict_get_code(source, 57900);
+    contracts = __tact_dict_set_code(contracts, 57900, code_57900);
+
+    ;; Contract Code: RequestContract
+    cell code_42506 = __tact_dict_get_code(source, 42506);
+    contracts = __tact_dict_set_code(contracts, 42506, code_42506);
+
+    ;; Contract Code: BorrowContract
+    cell code_55931 = __tact_dict_get_code(source, 55931);
+    contracts = __tact_dict_set_code(contracts, 55931, code_55931);
+
+    builder b = begin_cell();
+    b = b.store_builder_ref(begin_cell().store_dict(contracts));
+    b = b.store_int(false, 1);
+    b = $BorrowPool$init$_store(b, ($id, $app));
+    return (init_code, b.end_cell());
+}
+
+;;
+;; Type: CompensationPool
+;; TLB: _ id:uint32 name:^string maxTime:uint32 app:address freezed:coins acc:uint32 v:uint32 fcc:coins borrowBalance:dict<int, coins> debtId:uint256 = CompensationPool
+;;
+
+builder $CompensationPool$_store(builder build_0, (int, slice, int, slice, int, int, int, int, cell, int) v) inline {
+    var (v'id, v'name, v'maxTime, v'app, v'freezed, v'acc, v'v, v'fcc, v'borrowBalance, v'debtId) = v;
+    build_0 = build_0.store_uint(v'id, 32);
+    build_0 = build_0.store_builder_ref(begin_cell().store_slice(v'name));
+    build_0 = build_0.store_uint(v'maxTime, 32);
+    build_0 = build_0.store_slice(v'app);
+    build_0 = build_0.store_varuint16(v'freezed);
+    build_0 = build_0.store_uint(v'acc, 32);
+    build_0 = build_0.store_uint(v'v, 32);
+    build_0 = build_0.store_varuint16(v'fcc);
+    build_0 = build_0.store_dict(v'borrowBalance);
+    build_0 = build_0.store_uint(v'debtId, 256);
+    return build_0;
+}
+
+(slice, ((int, slice, int, slice, int, int, int, int, cell, int))) $CompensationPool$_load(slice sc_0) inline {
+    var v'id = sc_0~load_uint(32);
+    var v'name = sc_0~load_ref().begin_parse();
+    var v'maxTime = sc_0~load_uint(32);
+    var v'app = sc_0~load_msg_addr();
+    var v'freezed = sc_0~load_varuint16();
+    var v'acc = sc_0~load_uint(32);
+    var v'v = sc_0~load_uint(32);
+    var v'fcc = sc_0~load_varuint16();
+    var v'borrowBalance = sc_0~load_dict();
+    var v'debtId = sc_0~load_uint(256);
+    return (sc_0, (v'id, v'name, v'maxTime, v'app, v'freezed, v'acc, v'v, v'fcc, v'borrowBalance, v'debtId));
+}
+
+(slice, ((int, slice))) $CompensationPool$init$_load(slice sc_0) inline {
+    var v'id = sc_0~load_int(257);
+    var v'app = sc_0~load_msg_addr();
+    return (sc_0, (v'id, v'app));
+}
+
+(int, slice, int, slice, int, int, int, int, cell, int) $CompensationPool$_contract_load() impure inline {
+    slice $sc = get_data().begin_parse();
+    __tact_child_contract_codes = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$CompensationPool$_load();
+    }
+    else {
+        (int $id, slice $app) = $sc~$CompensationPool$init$_load();
+        $sc.end_parse();
+        return $CompensationPool$_contract_init($id, $app);
+    }
+}
+
+() $CompensationPool$_contract_store((int, slice, int, slice, int, int, int, int, cell, int) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_child_contract_codes);
+    b = b.store_int(true, 1);
+    b = $CompensationPool$_store(b, v);
+    set_data(b.end_cell());
+}
+
+;;
+;; Contract CompensationPool functions
+;;
+
+(int, slice, int, slice, int, int, int, int, cell, int) $CompensationPool$_contract_init(int $id, slice $app) impure inline {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = (null(), null(), null(), null(), null(), null(), null(), 0, null(), null());
+    $self'id = $id;
+    $self'debtId = 0;
+    $self'name = __gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7();
+    $self'maxTime = 0;
+    $self'app = $app;
+    $self'freezed = 0;
+    $self'acc = 0;
+    $self'v = 0;
+    $self'borrowBalance = null();
+    return ($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId);
+}
+
+slice $global_login(slice $address, slice $app, int $create) impure inline_ref {
+    var ($init'code, $init'data) = $User$_init_child($address, $app);
+    slice $contractAddress = $global_contractAddress(($init'code, $init'data));
+    if ((~ null?($create))) {
+        $global_send($SendParameters$_constructor_to_value_code_data_body($contractAddress, 20000000, $init'code, $init'data, $global_emptyCell()));
+        return $contractAddress;
+    }
+    return $contractAddress;
+}
+
+() $global_updateFunc(slice $address, cell $data, int $val1, slice $sender) impure inline_ref {
+    $global_send($SendParameters$_constructor_to_value_mode_body($address, 0, 66, $ChangeVal$_store_cell($ChangeVal$_constructor_val_newVal_initiator($val1, $data, $sender), begin_cell())));
+}
+
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_balance((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    var $fresh$ret_188 = $global_myBalance();
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), $fresh$ret_188);
+}
+
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_maxTime((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    var $fresh$ret_189 = $self'maxTime;
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), $fresh$ret_189);
+}
+
+((int, slice, int, slice, int, int, int, int, cell, int), slice) $CompensationPool$_fun_name((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    var $fresh$ret_190 = $self'name;
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), $fresh$ret_190);
+}
+
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_id((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    var $fresh$ret_191 = $self'id;
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), $fresh$ret_191);
+}
+
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_freezed((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    var $fresh$ret_192 = $self'freezed;
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), $fresh$ret_192);
+}
+
+((int, slice, int, slice, int, int, int, int, cell, int), int) $CompensationPool$_fun_fcc((int, slice, int, slice, int, int, int, int, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)) = $self;
+    var $fresh$ret_193 = $self'fcc;
+    return (($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId), $fresh$ret_193);
+}
+
+;;
+;; Get methods of a Contract CompensationPool
+;;
+
+_ %balance() method_id(104128) {
+    var self = $CompensationPool$_contract_load();
+    var res = self~$CompensationPool$_fun_balance();
+    return res;
+}
+
+_ %maxTime() method_id(108358) {
+    var self = $CompensationPool$_contract_load();
+    var res = self~$CompensationPool$_fun_maxTime();
+    return res;
+}
+
+_ %name() method_id(71334) {
+    var self = $CompensationPool$_contract_load();
+    var res = self~$CompensationPool$_fun_name();
+    return res;
+}
+
+_ %id() method_id(105872) {
+    var self = $CompensationPool$_contract_load();
+    var res = self~$CompensationPool$_fun_id();
+    return res;
+}
+
+_ %freezed() method_id(115915) {
+    var self = $CompensationPool$_contract_load();
+    var res = self~$CompensationPool$_fun_freezed();
+    return res;
+}
+
+_ %fcc() method_id(76663) {
+    var self = $CompensationPool$_contract_load();
+    var res = self~$CompensationPool$_fun_fcc();
+    return res;
+}
+
+;;
+;; Routing of a Contract CompensationPool
+;;
+
+;; message opcode reader utility: only binary receivers
+;; Returns 32 bit message opcode, otherwise throws the "Invalid incoming message" exit code
+(slice, int) ~load_opcode_internal(slice s) asm( -> 1 0) "32 LDUQ 130 THROWIFNOT";
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    cs~skip_bits(2);
+    var msg_bounceable = cs~load_int(1);
+    var msg_bounced = cs~load_int(1);
+    slice msg_sender_addr = cs~load_msg_addr();
+    __tact_context = (msg_bounceable, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var ($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId) = $CompensationPool$_contract_load();
+    
+    ;; Handle bounced messages
+    if (msg_bounced) { return (); }
+    int op = 0;
+    int in_msg_length = slice_bits(in_msg);
+    if (in_msg_length >= 32) {
+        op = in_msg~load_uint(32);
+    }
+    ;; Receive Overdue message
+    if (op == 3553126303) {
+        var $msg'address = in_msg~load_msg_addr();
+        var $msg'sum = in_msg~load_varuint16();
+        var $msg'id = in_msg~load_uint(32);
+        cell $myCell = $Builder$_fun_endCell(store_uint($Builder$_fun_storeAddress($global_beginCell(), $msg'address), $msg'id, 32));
+        int $sha256Hash = $Cell$_fun_hash($myCell);
+        int $balanceDebt = __tact_not_null(__tact_dict_get_int_coins($self'borrowBalance, 257, $sha256Hash));
+        $self'fcc = ($self'fcc + (($msg'sum * 1000000000) / $balanceDebt));
+        $global_send($SendParameters$_constructor_to_value_mode_body($msg'address, $msg'sum, 2, $Overdue$_store_cell($Overdue$_constructor_address_sum_id($msg'address, $msg'sum, $msg'id), begin_cell())));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Approve message
+    if (op == 1599388651) {
+        var $msg'id = in_msg~load_int(257);
+        var $msg'user = in_msg~__tact_load_address_opt();
+        var $msg'sender = in_msg~__tact_load_address_opt();
+        var $msg'balance = in_msg~load_varuint16();
+        slice $userAddress = $global_login(__tact_not_null($msg'sender), $self'app, null());
+        int $balance = ($global_myBalance() - $Context$_get_value(__tact_context_get()));
+        $global_send($SendParameters$_constructor_to_value_mode_body($userAddress, 0, 64, $Approve$_store_cell($Approve$_constructor_id_user_sender_balance($msg'id, $msg'user, $msg'sender, $balance), begin_cell())));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Decline message
+    if (op == 750137859) {
+        var $msg'id = in_msg~load_int(257);
+        var $msg'user = in_msg~__tact_load_address_opt();
+        var $msg'sender = in_msg~__tact_load_address_opt();
+        var $msg'balance = in_msg~load_varuint16();
+        slice $userAddress = $global_login(__tact_not_null($msg'sender), $self'app, null());
+        int $balance = ($global_myBalance() - $Context$_get_value(__tact_context_get()));
+        $global_send($SendParameters$_constructor_to_value_mode_body($userAddress, 0, 64, $Decline$_store_cell($Decline$_constructor_id_user_sender_balance($msg'id, $msg'user, $msg'sender, $balance), begin_cell())));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Request message
+    if (op == 1390358458) {
+        var $msg'id = in_msg~load_uint(256);
+        var $msg'user = in_msg~__tact_load_address_opt();
+        throw_unless(42972, ( equal_slices_bits(__tact_context_get_sender(), $self'app) ));
+        var ($init'code, $init'data) = $RequestContract$_init_child(__tact_not_null($msg'user), $msg'id, __tact_context_get_sender());
+        slice $requestContract = $global_contractAddress(($init'code, $init'data));
+        $global_send($SendParameters$_constructor_to_value_code_data($requestContract, $Context$_get_value(__tact_context_get()), $init'code, $init'data));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Borrow message
+    if (op == 490195545) {
+        var $msg'idBorrow = in_msg~load_uint(64);
+        var $msg'idComp = in_msg~load_uint(64);
+        var $msg'amount = in_msg~load_varuint16();
+        var $msg'time = in_msg~load_int(1) ? in_msg~load_uint(32) : null();
+        var $msg'to = in_msg~__tact_load_address_opt();
+        var $msg'fcc = in_msg~load_varuint16();
+        var $msg'balanceComp = in_msg~load_varuint16();
+        var $msg'balanceBorrow = in_msg~load_varuint16();
+        throw_unless(14711, ( equal_slices_bits(__tact_context_get_sender(), $self'app) ));
+        throw_unless(40092, (($global_myBalance() - ($msg'amount + $self'freezed)) >= 0));
+        int $sum_freeze = ($msg'amount + (($msg'amount * 10) / 100));
+        $self'fcc = ($self'fcc + (($sum_freeze * 1000000000) / ($global_myBalance() - $Context$_get_value(__tact_context_get()))));
+        $self'freezed = ($self'freezed + $sum_freeze);
+        $self'v = ($self'v + 1);
+        var ($init'code, $init'data) = $BorrowPool$_init_child($msg'idBorrow, $self'app);
+        slice $childAddress = $global_contractAddress(($init'code, $init'data));
+        int $sum = $Context$_get_value(__tact_context_get());
+        $global_send($SendParameters$_constructor_to_value_mode_body($childAddress, $sum, 2, $Borrow$_store_cell($Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow($msg'idBorrow, $msg'idComp, $msg'amount, $msg'to, $self'maxTime, (($msg'amount * 1000000000) / $global_myBalance()), ($global_myBalance() - $Context$_get_value(__tact_context_get())), $msg'balanceBorrow), begin_cell())));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive ChangeBorrow message
+    if (op == 3634185715) {
+        var $msg'balance = in_msg~load_varuint16();
+        var $msg'id = in_msg~load_uint(32);
+        cell $myCell = $Builder$_fun_endCell(store_uint($Builder$_fun_storeAddress($global_beginCell(), __tact_context_get_sender()), $msg'id, 32));
+        int $sha256Hash = $Cell$_fun_hash($myCell);
+        $self'borrowBalance~__tact_dict_set_int_coins(257, $sha256Hash, $msg'balance);
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive InitCompensationPool message
+    if (op == 95326449) {
+        var $msg'name = in_msg~load_ref().begin_parse();
+        var $msg'maxTime = in_msg~load_uint(32);
+        throw_unless(57255, ( equal_slices_bits(__tact_context_get_sender(), $self'app) ));
+        $self'name = $msg'name;
+        $self'maxTime = $msg'maxTime;
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Repay message
+    if (op == 1754501411) {
+        var $msg'id = in_msg~load_uint(256);
+        int $sum = $Context$_get_value(__tact_context_get());
+        cell $myCell = $Builder$_fun_endCell(store_uint($Builder$_fun_storeAddress($global_beginCell(), __tact_context_get_sender()), $msg'id, 32));
+        int $sha256Hash = $Cell$_fun_hash($myCell);
+        int $balanceDebt = __tact_not_null(__tact_dict_get_int_coins($self'borrowBalance, 257, $sha256Hash));
+        $sum = ($sum * 1000000000);
+        int $comission = (($Context$_get_value(__tact_context_get()) * 1000000000) / 600000000);
+        int $debtSum = ((($comission * 1000000000) / 100000000) + $comission);
+        $self'fcc = $self'fcc - (($debtSum * 1000000000) / $balanceDebt);
+        $self'borrowBalance~__tact_dict_set_int_coins(257, $sha256Hash, null());
+        $self'acc = $self'acc + ($sum / $balanceDebt);
+        $self'freezed = ($self'freezed - $debtSum);
+        $self'v = ($self'v + 1);
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Update message
+    if (op == 2420382095) {
+        var $msg'sender = in_msg~load_msg_addr();
+        cell $data2 = $Builder$_fun_endCell(store_uint(store_uint(store_uint($global_beginCell(), $self'id, 32), $self'v, 32), $self'fcc, 64));
+        slice $address = $global_login($msg'sender, $self'app, null());
+        $global_updateFunc($address, $data2, 6, $msg'sender);
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive UpdateEarn message
+    if (op == 584289618) {
+        var $msg'sender = in_msg~load_msg_addr();
+        cell $data2 = $Builder$_fun_endCell($Builder$_fun_storeCoins(store_uint(store_uint(store_uint($global_beginCell(), 1, 2), $self'id, 32), $self'v, 32), $self'acc));
+        slice $address = $global_login($msg'sender, $self'app, null());
+        $global_updateFunc($address, $data2, 5, $msg'sender);
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive DepositToComp message
+    if (op == 2322413052) {
+        var $msg'id = in_msg~load_uint(32);
+        var $msg'sender = in_msg~__tact_load_address_opt();
+        throw_unless(57255, ( equal_slices_bits(__tact_context_get_sender(), $self'app) ));
+        int $balance = $Context$_get_value(__tact_context_get());
+        cell $data = $Builder$_fun_endCell($Builder$_fun_storeCoins($Builder$_fun_storeAddress($global_beginCell(), $global_myAddress()), ($Context$_get_value(__tact_context_get()) - 50000000)));
+        slice $userAddress = $global_login(__tact_not_null($msg'sender), $self'app, null());
+        $global_send($SendParameters$_constructor_to_value_body($userAddress, 10000000, $ChangeVal$_store_cell($ChangeVal$_constructor_val_newVal_initiator(3, $data, __tact_not_null($msg'sender)), begin_cell())));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Withdraw message
+    if (op == 180313183) {
+        var $msg'from = in_msg~load_int(257);
+        var $msg'from2 = in_msg~__tact_load_address_opt();
+        var $msg'amount = in_msg~load_varuint16();
+        var $msg'to1 = in_msg~__tact_load_address_opt();
+        var ($init'code, $init'data) = $User$_init_child(__tact_not_null($msg'to1), $self'app);
+        slice $userAddress = $global_contractAddress(($init'code, $init'data));
+        throw_unless(14711, ( equal_slices_bits(__tact_context_get_sender(), $userAddress) ));
+        slice $to1 = __tact_not_null($msg'to1);
+        $global_send($SendParameters$_constructor_to_value($to1, $msg'amount));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive Deploy message
+    if (op == 0x946a98b6) {
+        var $deploy'queryId = in_msg~load_uint(64);
+        ($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId)~$CompensationPool$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId), begin_cell()));
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    
+    ;; Receive empty message
+    if ((op == 0) & (in_msg_length <= 32)) {
+        $CompensationPool$_contract_store(($self'id, $self'name, $self'maxTime, $self'app, $self'freezed, $self'acc, $self'v, $self'fcc, $self'borrowBalance, $self'debtId));
+        return ();
+    }
+    ;; Throw if not handled
+    throw(130);
+}
+
+
+() __tact_selector_hack_asm() impure asm """
+@atend @ 1 {
+        execute current@ context@ current!
+        {
+            // The core idea of this function is to save gas by avoiding unnecessary dict jump, when recv_internal/recv_external is called
+            // We want to extract recv_internal/recv_external from the dict and select needed function
+            // not by jumping to the needed function by it's index, but by using usual IF statements.
+
+            }END> b> // Close previous builder, now we have a cell of previous code on top of the stack
+
+            <{ // Start of the new code builder
+                SETCP0
+                // Swap the new code builder with the previous code, now we have previous code on top of the stack
+                swap
+                // Transform cell to slice and load first ref from the previous code, now we have the dict on top of the stack
+                <s ref@
+
+                // Extract the recv_internal from the dict
+                dup 0 swap @procdictkeylen idict@ { "internal shortcut error" abort } ifnot
+                swap
+
+                // Delete the recv_internal from the dict
+                0 swap @procdictkeylen idict- drop
+                // Delete the recv_external from the dict (it's okay if it's not there)
+                -1 swap @procdictkeylen idict- drop
+                // Delete the __tact_selector_hack from the dict
+                65535 swap @procdictkeylen idict- drop
+
+                // Bring the code builder from the bottom of the stack
+                // because if recv_external extraction is optional, and the number of elements on the stack is not fixed
+                depth 1- roll
+                // Swap with the dict from which we extracted recv_internal and (maybe) recv_external
+                swap
+
+                // Check if the dict is empty
+                dup null?
+                // Store a copy of this flag in the bottom of the stack
+                dup depth 1- -roll
+                {
+                    // If the dict is empty, just drop it (it will be null if it's empty)
+                    drop
+                }
+                {
+                    // If the dict is not empty, prepare continuation to be stored in c3
+                    <{
+                        // Save this dict as first ref in this continuation, it will be pushed in runtime by DICTPUSHCONST
+                        swap @procdictkeylen DICTPUSHCONST
+                        // Jump to the needed function by it's index
+                        DICTIGETJMPZ
+                        // If such key is not found, throw 11 along with the key as an argument
+                        11 THROWARG
+                    }> PUSHCONT
+                    // Store the continuation in c3
+                    c3 POP
+                } cond
+
+                // Function id is on top of the (runtime) stack
+                DUP IFNOTJMP:<{
+                    // place recv_internal here
+                    DROP swap @addop
+                }>
+
+                // Bring back the flag, indicating if the dict is empty or not from the bottom of the stack
+                depth 1- roll
+                {
+                    // If the dict is empty, throw 11
+                    11 THROWARG
+                }
+                {
+                    // If the dict is not empty, jump to continuation from c3
+                    c3 PUSH JMPX
+                } cond
+            }> b>
+        } : }END>c
+        current@ context! current!
+    } does @atend !
+""";
+
+() __tact_selector_hack() method_id(65535) {
+    return __tact_selector_hack_asm();
+}

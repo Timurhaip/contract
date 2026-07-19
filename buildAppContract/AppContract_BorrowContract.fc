@@ -432,7 +432,7 @@ builder $BorrowContract$_store(builder build_0, (int, slice, int, int, int, slic
 
 ;;
 ;; Type: CompensationPool
-;; TLB: _ id:uint32 name:^string maxTime:uint32 app:address freezed:coins acc:uint32 v:uint32 fcc:coins = CompensationPool
+;; TLB: _ id:uint32 name:^string maxTime:uint32 app:address freezed:coins acc:uint32 v:uint32 fcc:coins borrowBalance:dict<int, coins> debtId:uint256 = CompensationPool
 ;;
 
 builder $CompensationPool$init$_store(builder build_0, (int, slice) v) inline {

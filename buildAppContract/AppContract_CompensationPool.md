@@ -1,9 +1,9 @@
 # Tact compilation report
 Contract: CompensationPool
-BoC Size: 2922 bytes
+BoC Size: 3613 bytes
 
 ## Structures (Structs and Messages)
-Total structures: 47
+Total structures: 49
 
 ### DataSize
 TL-B: `_ cells:int257 bits:int257 refs:int257 = DataSize`
@@ -62,12 +62,8 @@ TL-B: `add_telegram_id#688f23fb id:uint256 = AddTelegramId`
 Signature: `AddTelegramId{id:uint256}`
 
 ### ChangeVal
-TL-B: `change_val#38078971 val:uint8 newVal:^cell = ChangeVal`
-Signature: `ChangeVal{val:uint8,newVal:^cell}`
-
-### SendData
-TL-B: `send_data#88ffc040 val:uint8 data:^cell = SendData`
-Signature: `SendData{val:uint8,data:^cell}`
+TL-B: `change_val#d02d0ac5 val:uint8 newVal:^cell initiator:address = ChangeVal`
+Signature: `ChangeVal{val:uint8,newVal:^cell,initiator:address}`
 
 ### RequestContract$Data
 TL-B: `_ address:address pool:uint256 app:address = RequestContract`
@@ -78,12 +74,28 @@ TL-B: `_ id:uint32 address:address createdTime:uint32 pool:uint256 sum:coins app
 Signature: `BorrowContract{id:uint32,address:address,createdTime:uint32,pool:uint256,sum:coins,app:address,endTime:uint64}`
 
 ### User$Data
-TL-B: `_ address:address telegramId:Maybe int257 rating:int257 app:address debts:dict<uint32, ^Debt{sum:coins,timetoreturn:uint32,borrowPool:uint256,compPool:uint256,commision:coins,fcc:coins}> investedIn:dict<address, ^CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint32,freezeCoff:uint32}> compensationPools:dict<uint256, address> debtId:uint32 = User`
-Signature: `User{address:address,telegramId:Maybe int257,rating:int257,app:address,debts:dict<uint32, ^Debt{sum:coins,timetoreturn:uint32,borrowPool:uint256,compPool:uint256,commision:coins,fcc:coins}>,investedIn:dict<address, ^CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint32,freezeCoff:uint32}>,compensationPools:dict<uint256, address>,debtId:uint32}`
+TL-B: `_ addressUser:address rating:int257 app:address debts:dict<uint32, ^Debt{sum:coins,timetoreturn:uint32,borrowPool:uint256,compPool:uint256,commision:coins,fcc:coins}> investedIn:dict<address, ^CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint64,freezeCoff:uint64,balanceUserAfter:coins}> compensationPools:dict<uint256, address> debtId:uint32 isDeployed:bool = User`
+Signature: `User{addressUser:address,rating:int257,app:address,debts:dict<uint32, ^Debt{sum:coins,timetoreturn:uint32,borrowPool:uint256,compPool:uint256,commision:coins,fcc:coins}>,investedIn:dict<address, ^CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint64,freezeCoff:uint64,balanceUserAfter:coins}>,compensationPools:dict<uint256, address>,debtId:uint32,isDeployed:bool}`
+
+### ExternalLogin
+TL-B: `external_login#d4da92b1 serverSignature:^cell payload:^cell = ExternalLogin`
+Signature: `ExternalLogin{serverSignature:^cell,payload:^cell}`
+
+### ExternalRequest
+TL-B: `external_request#2ce4c0f9 pubkey:uint256 signature:^slice payload:^cell = ExternalRequest`
+Signature: `ExternalRequest{pubkey:uint256,signature:^slice,payload:^cell}`
+
+### ExternalBorrow
+TL-B: `external_borrow#157415ef pubkey:uint256 signature:^slice payload:^cell = ExternalBorrow`
+Signature: `ExternalBorrow{pubkey:uint256,signature:^slice,payload:^cell}`
 
 ### Overdue
 TL-B: `overdue#d3c8679f address:address sum:coins id:uint32 = Overdue`
 Signature: `Overdue{address:address,sum:coins,id:uint32}`
+
+### ChangeBorrow
+TL-B: `change_borrow#d89d45f3 balance:coins id:uint32 = ChangeBorrow`
+Signature: `ChangeBorrow{balance:coins,id:uint32}`
 
 ### Time
 TL-B: `time#a6872347 address:address id:uint16 pool:uint16 = Time`
@@ -94,8 +106,8 @@ TL-B: `changesum#030514b1 sum:coins = Changesum`
 Signature: `Changesum{sum:coins}`
 
 ### Borrow
-TL-B: `borrow#1879d5e1 idBorrow:uint256 idComp:uint256 amount:coins time:Maybe int257 to:address fcc:coins = Borrow`
-Signature: `Borrow{idBorrow:uint256,idComp:uint256,amount:coins,time:Maybe int257,to:address,fcc:coins}`
+TL-B: `borrow#1d37ca59 idBorrow:uint64 idComp:uint64 amount:coins time:Maybe uint32 to:address fcc:coins balanceComp:coins balanceBorrow:coins = Borrow`
+Signature: `Borrow{idBorrow:uint64,idComp:uint64,amount:coins,time:Maybe uint32,to:address,fcc:coins,balanceComp:coins,balanceBorrow:coins}`
 
 ### InitBorrow
 TL-B: `init_borrow#69c9e7e5 endTime:uint32 sum:coins = InitBorrow`
@@ -113,10 +125,6 @@ Signature: `Close{}`
 TL-B: `update#9044198f sender:address = Update`
 Signature: `Update{sender:address}`
 
-### Unfreeze
-TL-B: `unfreeze#87de5ed3 v:uint256 fcc:coins id:uint256 = Unfreeze`
-Signature: `Unfreeze{v:uint256,fcc:coins,id:uint256}`
-
 ### UpdateEarn
 TL-B: `update_earn#22d38d52 sender:address = UpdateEarn`
 Signature: `UpdateEarn{sender:address}`
@@ -130,12 +138,12 @@ TL-B: `request#52df2fba id:uint256 user:address = Request`
 Signature: `Request{id:uint256,user:address}`
 
 ### Approve
-TL-B: `approve#8d887dd5 id:int257 user:address = Approve`
-Signature: `Approve{id:int257,user:address}`
+TL-B: `approve#5f54bbeb id:int257 user:address sender:address balance:coins = Approve`
+Signature: `Approve{id:int257,user:address,sender:address,balance:coins}`
 
 ### Decline
-TL-B: `decline#94afcacd id:int257 user:address = Decline`
-Signature: `Decline{id:int257,user:address}`
+TL-B: `decline#2cb63203 id:int257 user:address sender:address balance:coins = Decline`
+Signature: `Decline{id:int257,user:address,sender:address,balance:coins}`
 
 ### Withdraw
 TL-B: `withdraw#0abf5c5f from:int257 from2:address amount:coins to1:address = Withdraw`
@@ -178,23 +186,23 @@ TL-B: `_ sum:coins timetoreturn:uint32 borrowPool:uint256 compPool:uint256 commi
 Signature: `Debt{sum:coins,timetoreturn:uint32,borrowPool:uint256,compPool:uint256,commision:coins,fcc:coins}`
 
 ### CompPoolData
-TL-B: `_ v:uint32 freezed:coins address:address balance:coins earnCoff:uint32 freezeCoff:uint32 = CompPoolData`
-Signature: `CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint32,freezeCoff:uint32}`
+TL-B: `_ v:uint32 freezed:coins address:address balance:coins earnCoff:uint64 freezeCoff:uint64 balanceUserAfter:coins = CompPoolData`
+Signature: `CompPoolData{v:uint32,freezed:coins,address:address,balance:coins,earnCoff:uint64,freezeCoff:uint64,balanceUserAfter:coins}`
 
 ### BorrowPool$Data
-TL-B: `_ id:uint32 name:^string maxTime:uint32 app:address acc:coins v:uint32 = BorrowPool`
-Signature: `BorrowPool{id:uint32,name:^string,maxTime:uint32,app:address,acc:coins,v:uint32}`
+TL-B: `_ id:uint32 name:^string maxTime:uint32 app:address acc:coins v:uint32 borrowBalance:dict<int, coins> = BorrowPool`
+Signature: `BorrowPool{id:uint32,name:^string,maxTime:uint32,app:address,acc:coins,v:uint32,borrowBalance:dict<int, coins>}`
 
 ### CompensationPool$Data
-TL-B: `_ id:uint32 name:^string maxTime:uint32 app:address freezed:coins acc:uint32 v:uint32 fcc:coins = CompensationPool`
-Signature: `CompensationPool{id:uint32,name:^string,maxTime:uint32,app:address,freezed:coins,acc:uint32,v:uint32,fcc:coins}`
+TL-B: `_ id:uint32 name:^string maxTime:uint32 app:address freezed:coins acc:uint32 v:uint32 fcc:coins borrowBalance:dict<int, coins> debtId:uint256 = CompensationPool`
+Signature: `CompensationPool{id:uint32,name:^string,maxTime:uint32,app:address,freezed:coins,acc:uint32,v:uint32,fcc:coins,borrowBalance:dict<int, coins>,debtId:uint256}`
 
 ### AppContract$Data
-TL-B: `_ nowId:uint256 = AppContract`
-Signature: `AppContract{nowId:uint256}`
+TL-B: `_ nowId:uint256 seqno:uint32 serverPublicKey:uint256 = AppContract`
+Signature: `AppContract{nowId:uint256,seqno:uint32,serverPublicKey:uint256}`
 
 ## Get methods
-Total get methods: 4
+Total get methods: 6
 
 ## balance
 No arguments
@@ -205,7 +213,13 @@ No arguments
 ## name
 No arguments
 
+## id
+No arguments
+
 ## freezed
+No arguments
+
+## fcc
 No arguments
 
 ## Exit codes
@@ -245,15 +259,23 @@ No arguments
 * 135: Code of a contract was not found
 * 136: Invalid standard address
 * 138: Not a basechain address
+* 7997: You cant approve yourself
 * 8610:
+* 10453: You cant decline yourself
 * 14711: Not enought rights
-* 26744: You must obtain permission from the Compensation Pool.
+* 17654: Invalid seqno
+* 19281: Infuccient funds!
 * 28284: Not enough TON sent
 * 30382: You must obtain permission from this Compensation Pool.
+* 37146: Insufficient rights!
+* 38055: Invalid user signature
 * 40092: Not enought funds
 * 40420: Not enought rights!
 * 41253: Not enought funs!
 * 42972: Not enough rights
+* 44371: Invalid server signature
+* 46421: value not found
+* 48401: Invalid signature
 * 55621: Your rating only allows you to take less than 2
 * 56619: Insufficient funds for deploy
 * 56672: You dont have enought rights in this pool
@@ -276,23 +298,23 @@ Deployable --> BaseTrait
 graph TD
 CompensationPool
 CompensationPool --> RequestContract
-RequestContract --> CompensationPool
+RequestContract --> User
+User --> CompensationPool
 CompensationPool --> BorrowPool
 BorrowPool --> CompensationPool
 CompensationPool --> User
 User --> RequestContract
-RequestContract --> BorrowPool
-BorrowPool --> User
-User --> CompensationPool
+RequestContract --> CompensationPool
 CompensationPool --> BorrowContract
 BorrowContract --> CompensationPool
 BorrowContract --> RequestContract
-RequestContract --> User
+RequestContract --> BorrowPool
+BorrowPool --> User
 User --> BorrowContract
-BorrowContract --> BorrowPool
-BorrowPool --> RequestContract
-RequestContract --> BorrowContract
 BorrowContract --> User
 User --> BorrowPool
+BorrowPool --> RequestContract
+RequestContract --> BorrowContract
+BorrowContract --> BorrowPool
 BorrowPool --> BorrowContract
 ```

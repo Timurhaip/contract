@@ -6,6 +6,8 @@ PROGRAM{
   DECLPROC __tact_context_get_sender
   DECLPROC __tact_dict_set_code
   DECLPROC __tact_dict_get_code
+  DECLPROC __tact_dict_get_int_coins
+  DECLPROC __tact_dict_set_int_coins
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
   DECLPROC $ChangeVal$_store
@@ -25,25 +27,28 @@ PROGRAM{
   DECLPROC $global_newAddress
   DECLPROC $global_contractAddressExt
   DECLPROC $global_contractAddress
-  DECLPROC $SendParameters$_constructor_to_value_mode_code_data_body
+  DECLPROC $SendParameters$_constructor_to_value_code_data_body
   DECLPROC $User$_init_child
   DECLPROC $global_login
   DECLPROC $SendParameters$_constructor_to_value_mode_body
-  DECLPROC $ChangeVal$_constructor_val_newVal
+  DECLPROC $ChangeVal$_constructor_val_newVal_initiator
   DECLPROC $global_updateFunc
   DECLPROC $MessageParameters$_constructor_bounce_to_value_mode_body
   DECLPROC $BorrowPool$_fun_balance
   DECLPROC $BorrowPool$_fun_maxTime
   DECLPROC $BorrowPool$_fun_name
+  DECLPROC $BorrowPool$_fun_id
   DECLPROC $BorrowPool$_fun_notify
   DECLPROC $CompensationPool$_init_child
-  DECLPROC $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc
+  DECLPROC $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow
+  DECLPROC $SendParameters$_constructor_to_value_mode
   DECLPROC $SendParameters$_constructor_to_value
   DECLPROC $SendParameters$_constructor_to_value_body
   DECLPROC $DeployOk$_constructor_queryId
   104128 DECLMETHOD %balance
   108358 DECLMETHOD %maxTime
   71334 DECLMETHOD %name
+  105872 DECLMETHOD %id
   DECLPROC recv_internal
   65535 DECLMETHOD __tact_selector_hack
   DECLGLOBVAR __tact_context
@@ -85,6 +90,34 @@ PROGRAM{
     NULLSWAPIFNOT
     135 THROWIFNOT
   }>
+  __tact_dict_get_int_coins PROCINLINE:<{
+    -ROT
+    DICTIGET
+    NULLSWAPIFNOT
+    IF:<{
+      LDVARUINT16
+      DROP
+    }>ELSE<{
+      DROP
+      PUSHNULL
+    }>
+  }>
+  __tact_dict_set_int_coins PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      -ROT
+      DICTIDEL
+      DROP
+    }>ELSE<{
+      NEWC
+      SWAP
+      STVARUINT16
+      s1 s3 s3 XCHG3
+      DICTISETB
+    }>
+  }>
   $DeployOk$_store PROCINLINE:<{
     2952335191 PUSHINT
     ROT
@@ -97,26 +130,28 @@ PROGRAM{
     ENDC
   }>
   $ChangeVal$_store PROCINLINE:<{
-    940018033 PUSHINT
-    s0 s3 XCHG2
+    3492612805 PUSHINT
+    s0 s4 XCHG2
     32 STU
+    s1 s2 XCHG
     8 STU
     STREF
+    STSLICE
   }>
   $ChangeVal$_store_cell PROCINLINE:<{
-    -ROT
+    3 -ROLL
     $ChangeVal$_store INLINECALLDICT
     ENDC
   }>
   $Borrow$_store PROCINLINE:<{
-    410637793 PUSHINT
-    s0 s7 XCHG2
+    490195545 PUSHINT
+    s0 s9 XCHG2
     32 STU
+    s1 s7 XCHG
+    64 STU
     s1 s5 XCHG
-    256 STU
-    s1 s3 XCHG
-    256 STU
-    SWAP
+    64 STU
+    s0 s3 XCHG2
     STVARUINT16
     OVER
     ISNULL
@@ -125,38 +160,41 @@ PROGRAM{
       TRUE
       SWAP
       1 STI
-      257 PUSHINT
-      STIX
+      32 STU
     }>ELSE<{
       FALSE
       s2 POP
       1 STI
     }>
-    NEWC
-    ROT
+    SWAP
     __tact_store_address_opt INLINECALLDICT
-    ROT
+    SWAP
     STVARUINT16
-    STBREFR
+    SWAP
+    STVARUINT16
+    SWAP
+    STVARUINT16
   }>
   $Borrow$_store_cell PROCINLINE:<{
-    6 -ROLL
+    8 -ROLL
     $Borrow$_store INLINECALLDICT
     ENDC
   }>
   $BorrowPool$_store PROCINLINE:<{
-    s5 s6 XCHG2
+    s6 s7 XCHG2
     32 STU
-    s0 s3 XCHG
+    s0 s4 XCHG
     NEWC
     STSLICE
-    s1 s3 XCHG
+    s1 s4 XCHG
     STBREFR
+    s1 s2 XCHG
     32 STU
     STSLICE
     SWAP
     STVARUINT16
     32 STU
+    STDICT
   }>
   $BorrowPool$_load PROCINLINE:<{
     32 LDU
@@ -168,7 +206,8 @@ PROGRAM{
     LDMSGADDR
     LDVARUINT16
     32 LDU
-    6 -ROLL
+    LDDICT
+    7 -ROLL
   }>
   $Context$_get_value PROCINLINE:<{
     s1 s3 XCHG
@@ -197,6 +236,7 @@ PROGRAM{
     s0 s0 PUSH2
     s3 s4 XCHG
     s2 s3 XCHG
+    PUSHNULL
   }>
   $BorrowPool$_contract_load PROCINLINE:<{
     c4 PUSH
@@ -208,7 +248,7 @@ PROGRAM{
     SWAP
     IF:<{
       $BorrowPool$_load INLINECALLDICT
-      1 6 BLKDROP2
+      1 7 BLKDROP2
     }>ELSE<{
       $BorrowPool$init$_load INLINECALLDICT
       s0 s2 XCHG
@@ -225,7 +265,7 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    6 -ROLL
+    7 -ROLL
     $BorrowPool$_store INLINECALLDICT
     ENDC
     c4 POP
@@ -268,10 +308,9 @@ PROGRAM{
     -ROT
     $global_contractAddressExt INLINECALLDICT
   }>
-  $SendParameters$_constructor_to_value_mode_code_data_body PROCINLINE:<{
-    s3 s5 XCHG
-    s1 s4 s4 XCHG3
-    s0 s3 XCHG
+  $SendParameters$_constructor_to_value_code_data_body PROCINLINE:<{
+    0 PUSHINT
+    s4 s5 XCHG2
     TRUE
   }>
   $User$_init_child PROCREF:<{
@@ -284,15 +323,15 @@ PROGRAM{
     __tact_dict_get_code INLINECALLDICT
     NEWDICT
     s2 PUSH
-    42506 PUSHINT
+    21538 PUSHINT
     __tact_dict_get_code INLINECALLDICT
-    42506 PUSHINT
+    21538 PUSHINT
     SWAP
     __tact_dict_set_code INLINECALLDICT
     s2 PUSH
-    21538 PUSHINT
+    42506 PUSHINT
     __tact_dict_get_code INLINECALLDICT
-    21538 PUSHINT
+    42506 PUSHINT
     SWAP
     __tact_dict_set_code INLINECALLDICT
     s0 s2 XCHG
@@ -318,21 +357,20 @@ PROGRAM{
     ENDC
   }>
   $global_login PROCREF:<{
+    -ROT
+    $User$_init_child INLINECALLDICT
+    2DUP
+    $global_contractAddress INLINECALLDICT
+    s0 s3 XCHG
     ISNULL
     NOT
     IFJMP:<{
-      $User$_init_child INLINECALLDICT
-      2DUP
-      $global_contractAddress INLINECALLDICT
-      100000000 PUSHINT
-      1 PUSHINT
+      20000000 PUSHINT
           <b b> PUSHREF // Pure Fift: "<b" creates a builder, "b>" turns it into a cell at compile time
-      s3 PUSH
-      s0 s5 XCHG
-      s3 s4 XCHG
-      s2 s3 XCHG
-      s6 s0 s0 XCHG3
-      $SendParameters$_constructor_to_value_mode_code_data_body INLINECALLDICT
+      s4 PUSH
+      s4 s1 s4 XCHG3
+      s3 s3 XCHG2
+      $SendParameters$_constructor_to_value_code_data_body INLINECALLDICT
           NEWC
           b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
           1 STI               // store `bounce`
@@ -400,8 +438,7 @@ PROGRAM{
           SWAP
           SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
     }>
-    $User$_init_child INLINECALLDICT
-    $global_contractAddress INLINECALLDICT
+    2DROP
   }>
   $SendParameters$_constructor_to_value_mode_body PROCINLINE:<{
     2SWAP
@@ -410,17 +447,16 @@ PROGRAM{
     s0 s0 s3 XCHG3
     TRUE
   }>
-  $ChangeVal$_constructor_val_newVal PROCINLINE:<{
+  $ChangeVal$_constructor_val_newVal_initiator PROCINLINE:<{
   }>
   $global_updateFunc PROCREF:<{
-    50000000 PUSHINT
-    SWAP
-    2 PUSHINT
+    0 PUSHINT
+    s2 s3 XCHG2
+    66 PUSHINT
     s0 s3 XCHG
-    $ChangeVal$_constructor_val_newVal INLINECALLDICT
+    $ChangeVal$_constructor_val_newVal_initiator INLINECALLDICT
     NEWC
     $ChangeVal$_store_cell INLINECALLDICT
-    s1 s2 XCHG
     $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
         NEWC
         b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
@@ -497,10 +533,13 @@ PROGRAM{
         BALANCE FIRST
   }>
   $BorrowPool$_fun_maxTime PROCREF:<{
-    s3 PUSH
+    s4 PUSH
   }>
   $BorrowPool$_fun_name PROCREF:<{
-    s4 PUSH
+    s5 PUSH
+  }>
+  $BorrowPool$_fun_id PROCREF:<{
+    s6 PUSH
   }>
   $BorrowPool$_fun_notify PROCINLINE:<{
     __tact_context_get_sender INLINECALLDICT
@@ -571,8 +610,16 @@ PROGRAM{
     $CompensationPool$init$_store INLINECALLDICT
     ENDC
   }>
-  $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc PROCINLINE:<{
-    s1 s2 XCHG
+  $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow PROCINLINE:<{
+    s3 s4 XCHG
+  }>
+  $SendParameters$_constructor_to_value_mode PROCINLINE:<{
+    PUSHNULL
+    2SWAP
+    PUSHNULL
+    PUSHNULL
+    s0 s0 s3 XCHG3
+    TRUE
   }>
   $SendParameters$_constructor_to_value PROCINLINE:<{
     0 PUSHINT
@@ -596,17 +643,22 @@ PROGRAM{
   %balance PROC:<{
     $BorrowPool$_contract_load INLINECALLDICT
     $BorrowPool$_fun_balance INLINECALLDICT
-    6 1 BLKDROP2
+    7 1 BLKDROP2
   }>
   %maxTime PROC:<{
     $BorrowPool$_contract_load INLINECALLDICT
     $BorrowPool$_fun_maxTime INLINECALLDICT
-    6 1 BLKDROP2
+    7 1 BLKDROP2
   }>
   %name PROC:<{
     $BorrowPool$_contract_load INLINECALLDICT
     $BorrowPool$_fun_name INLINECALLDICT
-    6 1 BLKDROP2
+    7 1 BLKDROP2
+  }>
+  %id PROC:<{
+    $BorrowPool$_contract_load INLINECALLDICT
+    $BorrowPool$_fun_id INLINECALLDICT
+    7 1 BLKDROP2
   }>
   recv_internal PROC:<{
     SWAP
@@ -624,42 +676,38 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $BorrowPool$_contract_load INLINECALLDICT
-    s0 s7 XCHG
+    s0 s8 XCHG
     IFJMP:<{
-      7 BLKDROP
+      8 BLKDROP
     }>
     0 PUSHINT
-    s6 PUSH
+    s7 PUSH
     SBITS
     DUP
     31 GTINT
     IF:<{
       NIP
-      s0 s6 XCHG
-      32 LDU
       s0 s7 XCHG
+      32 LDU
+      s0 s8 XCHG
     }>
     OVER
-    410637793 PUSHINT
+    490195545 PUSHINT
     EQUAL
     IFJMP:<{
       2DROP
-      s0 s5 XCHG
-      256 LDU
-      256 LDU
+      s0 s6 XCHG
+      64 LDU
+      64 LDU
       LDVARUINT16
       1 LDI
       SWAP
       IF:<{
-        257 PUSHINT
-        LDIX
+        32 LDU
       }>ELSE<{
         PUSHNULL
         SWAP
       }>
-      LDREF
-      DROP
-      CTOS
                   b{00} SDBEGINSQ
                   IF:<{
                     PUSHNULL
@@ -669,8 +717,9 @@ PROGRAM{
                   }>
       SWAP
       LDVARUINT16
+      LDVARUINT16
       DROP
-      s4 s6 PUSH2
+      s5 s8 PUSH2
       $CompensationPool$_init_child INLINECALLDICT
       $global_contractAddress INLINECALLDICT
       14711 PUSHINT
@@ -680,28 +729,35 @@ PROGRAM{
       THROWANYIFNOT
       40092 PUSHINT
           BALANCE FIRST
-      s5 PUSH
+      s6 PUSH
       SUB
       -1 GTINT
       THROWANYIFNOT
-      OVER
+      s2 PUSH
       __tact_not_null INLINECALLDICT
-      s7 PUSH
+      s9 PUSH
       PUSHNULL
       $global_login INLINECALLDICT
-      s0 s3 XCHG
+      s0 s4 XCHG
       __tact_not_null INLINECALLDICT
-      s8 PUSH
+      s10 PUSH
           MIN
-      s3 s6 XCHG
-      s2 s5 XCHG
-      2 PUSHINT
-      s5 PUSH
-      s7 s7 s3 XCHG3
-      $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc INLINECALLDICT
+      1 PUSHINT
+          BALANCE FIRST
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      SUB
+      s7 PUSH
+      s6 s10 XCHG
+      s5 s9 XCHG
+      s4 s10 XCPU
+      s0 s4 XCHG
+      s0 s3 XCHG
+      s10 s1 s10 XCHG3
+      $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow INLINECALLDICT
       NEWC
       $Borrow$_store_cell INLINECALLDICT
-      s1 s2 XCHG
+      s1 s3 XCHG
       $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
           NEWC
           b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
@@ -769,8 +825,78 @@ PROGRAM{
           // Group 5: Sending the message, with `mode` on top
           SWAP
           SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
-      s3 s5 XCHG
-      2 3 BLKSWAP
+      __tact_not_null INLINECALLDICT
+      0 PUSHINT
+      64 PUSHINT
+      $SendParameters$_constructor_to_value_mode INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s4 s6 XCHG
+      2 4 BLKSWAP
       $BorrowPool$_contract_store INLINECALLDICT
     }>
     OVER
@@ -778,8 +904,9 @@ PROGRAM{
     EQUAL
     IFJMP:<{
       2DROP
-      2 2 BLKDROP2
-      s0 s3 XCHG
+      s3 POP
+      s3 POP
+      s0 s4 XCHG
       LDREF
       SWAP
       CTOS
@@ -788,11 +915,36 @@ PROGRAM{
       DROP
       57255 PUSHINT
       __tact_context_get_sender INLINECALLDICT
-      s4 PUSH
+      s7 PUSH
       SDEQ
       THROWANYIFNOT
-      s0 s3 XCHG
-      s4 s5 XCHG2
+      s0 s4 XCHG
+      s5 s6 XCHG2
+      s3 s3 s0 XCHG3
+      $BorrowPool$_contract_store INLINECALLDICT
+    }>
+    OVER
+    3634185715 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s6 XCHG
+      LDVARUINT16
+      32 LDU
+      DROP
+          NEWC
+      __tact_context_get_sender INLINECALLDICT
+          STSLICER
+      32 STU
+          ENDC
+          HASHCU
+      s2 s8 XCHG
+      257 PUSHINT
+      s0 s2 XCHG
+      __tact_dict_set_int_coins INLINECALLDICT
+      s4 s6 XCHG
+      s3 s5 XCHG
+      s4 s3 s0 XCHG3
       $BorrowPool$_contract_store INLINECALLDICT
     }>
     OVER
@@ -800,27 +952,48 @@ PROGRAM{
     EQUAL
     IFJMP:<{
       2DROP
-      s5 POP
+      s0 s6 XCHG
+      256 LDU
+      DROP
+          NEWC
+      __tact_context_get_sender INLINECALLDICT
+          STSLICER
+      32 STU
+          ENDC
+          HASHCU
+      257 PUSHINT
+      s8 PUSH
+      s0 s2 XCHG
+      __tact_dict_get_int_coins INLINECALLDICT
+      __tact_not_null INLINECALLDICT
       __tact_context_get INLINECALLDICT
       $Context$_get_value INLINECALLDICT
-      1100000000 PUSHINT
-      MUL
-      1040000000 PUSHINT
+      110 MULCONST
+      104 PUSHINT
       DIV
       DUP
-      1100000000 PUSHINT
+      10 MULCONST
+      11 PUSHINT
       DIV
       s1 s(-1) PUXC
       SUB
       SUB
-      400000000 PUSHINT
+      2 LSHIFT#
+      10 PUSHINT
+      DIV
+      1000000000 PUSHINT
       MUL
-      s1 s5 XCHG
+      SWAP
+      DIV
+      10 PUSHINT
+      DIV
       ADD
       s0 s5 XCHG
       INC
+      s4 s6 XCHG
       s3 s5 XCHG
-      s4 s3 s0 XCHG3
+      s4 s0 s3 XCHG3
+      s0 s2 XCHG
       $BorrowPool$_contract_store INLINECALLDICT
     }>
     OVER
@@ -828,7 +1001,7 @@ PROGRAM{
     EQUAL
     IFJMP:<{
       2DROP
-      s0 s5 XCHG
+      s0 s6 XCHG
       257 PUSHINT
       LDIX
       NIP
@@ -851,7 +1024,7 @@ PROGRAM{
       NIP
       DUP
       __tact_not_null INLINECALLDICT
-      s3 PUSH
+      s4 PUSH
       $User$_init_child INLINECALLDICT
       $global_contractAddress INLINECALLDICT
       14711 PUSHINT
@@ -928,8 +1101,8 @@ PROGRAM{
           // Group 5: Sending the message, with `mode` on top
           SWAP
           SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
-      s3 s5 XCHG
-      2 3 BLKSWAP
+      s4 s6 XCHG
+      2 4 BLKSWAP
       $BorrowPool$_contract_store INLINECALLDICT
     }>
     OVER
@@ -937,7 +1110,7 @@ PROGRAM{
     EQUAL
     IFJMP:<{
       2DROP
-      s0 s5 XCHG
+      s0 s6 XCHG
       32 LDU
       NIP
                   b{00} SDBEGINSQ
@@ -950,7 +1123,7 @@ PROGRAM{
       NIP
       57255 PUSHINT
       __tact_context_get_sender INLINECALLDICT
-      s3 PUSH
+      s4 PUSH
       SDEQ
       THROWANYIFNOT
           NEWC
@@ -958,29 +1131,30 @@ PROGRAM{
           STSLICER
       __tact_context_get INLINECALLDICT
       $Context$_get_value INLINECALLDICT
-      50000000 PUSHINT
+      10000000 PUSHINT
       SUB
           STVARUINT16
       s7 s(-1) PUXC
       32 STU
-      s6 s(-1) PUXC
+      s2 s(-1) PUXC
       32 STU
       0 PUSHINT
       SWAP
       32 STU
           ENDC
-      SWAP
+      OVER
       __tact_not_null INLINECALLDICT
-          MYADDR
+      s4 PUSH
       PUSHNULL
       $global_login INLINECALLDICT
-      50000000 PUSHINT
+      10000000 PUSHINT
       3 PUSHINT
-      s0 s3 XCHG2
-      $ChangeVal$_constructor_val_newVal INLINECALLDICT
+      s0 s4 XCHG
+      __tact_not_null INLINECALLDICT
+      s4 s3 s0 XCHG3
+      $ChangeVal$_constructor_val_newVal_initiator INLINECALLDICT
       NEWC
       $ChangeVal$_store_cell INLINECALLDICT
-      s1 s2 XCHG
       $SendParameters$_constructor_to_value_body INLINECALLDICT
           NEWC
           b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
@@ -1048,8 +1222,8 @@ PROGRAM{
           // Group 5: Sending the message, with `mode` on top
           SWAP
           SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
-      s3 s5 XCHG
-      2 3 BLKSWAP
+      s4 s6 XCHG
+      2 4 BLKSWAP
       $BorrowPool$_contract_store INLINECALLDICT
     }>
     OVER
@@ -1057,21 +1231,29 @@ PROGRAM{
     EQUAL
     IFJMP:<{
       2DROP
-      s5 POP
+      s0 s6 XCHG
+      LDMSGADDR
+      DROP
           NEWC
-      s4 s(-1) PUXC
-      32 STU
+      0 PUSHINT
+      SWAP
+      2 STU
       s6 s(-1) PUXC
       32 STU
-      s5 PUSH
+      s7 s(-1) PUXC
+      32 STU
+      s2 PUSH
           STVARUINT16
           ENDC
-          MYADDR
+      s1 s3 PUSH2
+      PUSHNULL
+      $global_login INLINECALLDICT
+      s0 s2 XCHG
+      5 PUSHINT
       SWAP
-      6 PUSHINT
       $global_updateFunc INLINECALLDICT
-      s3 s5 XCHG
-      2 3 BLKSWAP
+      s4 s6 XCHG
+      2 4 BLKSWAP
       $BorrowPool$_contract_store INLINECALLDICT
     }>
     OVER
@@ -1079,31 +1261,31 @@ PROGRAM{
     EQUAL
     IFJMP:<{
       2DROP
-      s0 s5 XCHG
+      s0 s6 XCHG
       64 LDU
       DROP
       $DeployOk$_constructor_queryId INLINECALLDICT
       NEWC
       $DeployOk$_store_cell INLINECALLDICT
+      s5 s7 XCHG
       s4 s6 XCHG
       s3 s5 XCHG
       s4 s3 s0 XCHG3
-      s1 s2 XCHG
       $BorrowPool$_fun_notify INLINECALLDICT
       $BorrowPool$_contract_store INLINECALLDICT
     }>
-    s7 POP
+    s8 POP
     0 EQINT
-    s0 s6 XCHG
+    s0 s7 XCHG
     33 LESSINT
-    s1 s6 XCHG
+    s1 s7 XCHG
     AND
     IFJMP:<{
-      s3 s5 XCHG
-      2 3 BLKSWAP
+      s4 s6 XCHG
+      2 4 BLKSWAP
       $BorrowPool$_contract_store INLINECALLDICT
     }>
-    6 BLKDROP
+    7 BLKDROP
     130 THROW
   }>
   __tact_selector_hack PROC:<{

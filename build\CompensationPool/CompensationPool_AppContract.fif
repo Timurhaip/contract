@@ -1,0 +1,3464 @@
+// automatically generated from `@stdlib/std/stdlib.fc` `/workspaces/contract/build\CompensationPool/CompensationPool_AppContract.fc` 
+PROGRAM{
+  DECLPROC __tact_store_address_opt
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_slice_eq_bits_nullable_right
+  DECLPROC __tact_dict_set_code
+  DECLPROC __tact_dict_get_code
+  DECLPROC $ChangeVal$_store
+  DECLPROC $ChangeVal$_store_cell
+  DECLPROC $Borrow$_store
+  DECLPROC $Borrow$_store_cell
+  DECLPROC $CheckTime$_store
+  DECLPROC $CheckTime$_store_cell
+  DECLPROC $Update$_store
+  DECLPROC $Update$_store_cell
+  DECLPROC $UpdateEarn$_store
+  DECLPROC $UpdateEarn$_store_cell
+  DECLPROC $Repay$_store
+  DECLPROC $Repay$_store_cell
+  DECLPROC $Request$_store
+  DECLPROC $Request$_store_cell
+  DECLPROC $Approve$_store
+  DECLPROC $Approve$_store_cell
+  DECLPROC $Decline$_store
+  DECLPROC $Decline$_store_cell
+  DECLPROC $Withdraw$_store
+  DECLPROC $Withdraw$_store_cell
+  DECLPROC $InitCompensationPool$_store
+  DECLPROC $InitCompensationPool$_store_cell
+  DECLPROC $Deposit$_store
+  DECLPROC $Deposit$_store_cell
+  DECLPROC $DepositToComp$_store
+  DECLPROC $DepositToComp$_store_cell
+  DECLPROC $InitBorrowPool$_store
+  DECLPROC $InitBorrowPool$_store_cell
+  DECLPROC $AppContract$_store
+  DECLPROC $AppContract$_load
+  DECLPROC $Context$_get_value
+  DECLPROC $BorrowContract$init$_store
+  DECLPROC $User$init$_store
+  DECLPROC $BorrowPool$init$_store
+  DECLPROC $CompensationPool$init$_store
+  DECLPROC $AppContract$_contract_init
+  DECLPROC $AppContract$_contract_load
+  DECLPROC $AppContract$_contract_store
+  DECLPROC $Cell$_fun_asSlice
+  DECLPROC $global_newAddress
+  DECLPROC $global_contractAddressExt
+  DECLPROC $global_contractAddress
+  DECLPROC $SendParameters$_constructor_to_value_code_data_body
+  DECLPROC $User$_init_child
+  DECLPROC $global_login
+  DECLPROC $StateInit$_constructor_code_data
+  DECLPROC $global_getWalletAddress
+  DECLPROC $SendParameters$_constructor_to_value_mode_body
+  DECLPROC $ChangeVal$_constructor_val_newVal_initiator
+  DECLPROC $BorrowContract$_init_child
+  DECLPROC $BorrowPool$_init_child
+  DECLPROC $CompensationPool$_init_child
+  DECLPROC $AppContract$_fun_usersData
+  DECLPROC $AppContract$_fun_borrowPools
+  DECLPROC $AppContract$_fun_compPools
+  DECLPROC $AppContract$_fun_seqno
+  DECLPROC $CheckTime$_constructor_
+  DECLPROC $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow
+  DECLPROC $SendParameters$_constructor_to_value_body
+  DECLPROC $InitBorrowPool$_constructor_name_maxTime
+  DECLPROC $UpdateEarn$_constructor_sender
+  DECLPROC $Withdraw$_constructor_from_from2_amount_to1
+  DECLPROC $Deposit$_constructor_id_sender
+  DECLPROC $InitCompensationPool$_constructor_name_maxTime
+  DECLPROC $Update$_constructor_sender
+  DECLPROC $DepositToComp$_constructor_id_sender
+  DECLPROC $Request$_constructor_id_user
+  DECLPROC $Approve$_constructor_id_user_sender_balance
+  DECLPROC $Decline$_constructor_id_user_sender_balance
+  DECLPROC $Repay$_constructor_id
+  123767 DECLMETHOD %usersData
+  105061 DECLMETHOD %borrowPools
+  111216 DECLMETHOD %compPools
+  85143 DECLMETHOD %seqno
+  DECLPROC recv_internal
+  DECLPROC recv_external
+  65535 DECLMETHOD __tact_selector_hack
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_child_contract_codes
+  DECLGLOBVAR __tact_randomized
+  __tact_store_address_opt PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      b{00} STSLICECONST
+    }>ELSE<{
+      SWAP
+      STSLICE
+    }>
+  }>
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_slice_eq_bits_nullable_right PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      2DROP
+      FALSE
+    }>ELSE<{
+      SDEQ
+    }>
+  }>
+  __tact_dict_set_code PROCINLINE:<{
+    s0 s2 XCHG
+    16 PUSHINT
+    DICTUSETREF
+  }>
+  __tact_dict_get_code PROCINLINE:<{
+    SWAP
+    16 PUSHINT
+    DICTUGETREF
+    NULLSWAPIFNOT
+    135 THROWIFNOT
+  }>
+  $ChangeVal$_store PROCINLINE:<{
+    3492612805 PUSHINT
+    s0 s4 XCHG2
+    32 STU
+    s1 s2 XCHG
+    8 STU
+    STREF
+    STSLICE
+  }>
+  $ChangeVal$_store_cell PROCINLINE:<{
+    3 -ROLL
+    $ChangeVal$_store INLINECALLDICT
+    ENDC
+  }>
+  $Borrow$_store PROCINLINE:<{
+    490195545 PUSHINT
+    s0 s9 XCHG2
+    32 STU
+    s1 s7 XCHG
+    64 STU
+    s1 s5 XCHG
+    64 STU
+    s0 s3 XCHG2
+    STVARUINT16
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      SWAP
+      1 STI
+      32 STU
+    }>ELSE<{
+      FALSE
+      s2 POP
+      1 STI
+    }>
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    SWAP
+    STVARUINT16
+    SWAP
+    STVARUINT16
+    SWAP
+    STVARUINT16
+  }>
+  $Borrow$_store_cell PROCINLINE:<{
+    8 -ROLL
+    $Borrow$_store INLINECALLDICT
+    ENDC
+  }>
+  $CheckTime$_store PROCINLINE:<{
+    DROP
+    265710716 PUSHINT
+    SWAP
+    32 STU
+  }>
+  $CheckTime$_store_cell PROCINLINE:<{
+    SWAP
+    $CheckTime$_store INLINECALLDICT
+    ENDC
+  }>
+  $Update$_store PROCINLINE:<{
+    2420382095 PUSHINT
+    ROT
+    32 STU
+    STSLICE
+  }>
+  $Update$_store_cell PROCINLINE:<{
+    SWAP
+    $Update$_store INLINECALLDICT
+    ENDC
+  }>
+  $UpdateEarn$_store PROCINLINE:<{
+    584289618 PUSHINT
+    ROT
+    32 STU
+    STSLICE
+  }>
+  $UpdateEarn$_store_cell PROCINLINE:<{
+    SWAP
+    $UpdateEarn$_store INLINECALLDICT
+    ENDC
+  }>
+  $Repay$_store PROCINLINE:<{
+    1754501411 PUSHINT
+    ROT
+    32 STU
+    256 STU
+  }>
+  $Repay$_store_cell PROCINLINE:<{
+    SWAP
+    $Repay$_store INLINECALLDICT
+    ENDC
+  }>
+  $Request$_store PROCINLINE:<{
+    1390358458 PUSHINT
+    s0 s3 XCHG2
+    32 STU
+    256 STU
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+  }>
+  $Request$_store_cell PROCINLINE:<{
+    -ROT
+    $Request$_store INLINECALLDICT
+    ENDC
+  }>
+  $Approve$_store PROCINLINE:<{
+    1599388651 PUSHINT
+    s0 s5 XCHG2
+    32 STU
+    s1 s3 XCHG
+    257 PUSHINT
+    STIX
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    SWAP
+    STVARUINT16
+  }>
+  $Approve$_store_cell PROCINLINE:<{
+    4 -ROLL
+    $Approve$_store INLINECALLDICT
+    ENDC
+  }>
+  $Decline$_store PROCINLINE:<{
+    750137859 PUSHINT
+    s0 s5 XCHG2
+    32 STU
+    s1 s3 XCHG
+    257 PUSHINT
+    STIX
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    SWAP
+    STVARUINT16
+  }>
+  $Decline$_store_cell PROCINLINE:<{
+    4 -ROLL
+    $Decline$_store INLINECALLDICT
+    ENDC
+  }>
+  $Withdraw$_store PROCINLINE:<{
+    180313183 PUSHINT
+    s0 s5 XCHG2
+    32 STU
+    s1 s3 XCHG
+    257 PUSHINT
+    STIX
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    SWAP
+    STVARUINT16
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+  }>
+  $Withdraw$_store_cell PROCINLINE:<{
+    4 -ROLL
+    $Withdraw$_store INLINECALLDICT
+    ENDC
+  }>
+  $InitCompensationPool$_store PROCINLINE:<{
+    95326449 PUSHINT
+    s0 s3 XCHG2
+    32 STU
+    SWAP
+    NEWC
+    STSLICE
+    STBREFR
+    32 STU
+  }>
+  $InitCompensationPool$_store_cell PROCINLINE:<{
+    -ROT
+    $InitCompensationPool$_store INLINECALLDICT
+    ENDC
+  }>
+  $Deposit$_store PROCINLINE:<{
+    507992258 PUSHINT
+    s0 s3 XCHG2
+    32 STU
+    32 STU
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+  }>
+  $Deposit$_store_cell PROCINLINE:<{
+    -ROT
+    $Deposit$_store INLINECALLDICT
+    ENDC
+  }>
+  $DepositToComp$_store PROCINLINE:<{
+    2322413052 PUSHINT
+    s0 s3 XCHG2
+    32 STU
+    32 STU
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+  }>
+  $DepositToComp$_store_cell PROCINLINE:<{
+    -ROT
+    $DepositToComp$_store INLINECALLDICT
+    ENDC
+  }>
+  $InitBorrowPool$_store PROCINLINE:<{
+    1160199139 PUSHINT
+    s0 s3 XCHG2
+    32 STU
+    SWAP
+    NEWC
+    STSLICE
+    STBREFR
+    32 STU
+  }>
+  $InitBorrowPool$_store_cell PROCINLINE:<{
+    -ROT
+    $InitBorrowPool$_store INLINECALLDICT
+    ENDC
+  }>
+  $AppContract$_store PROCINLINE:<{
+    s2 s3 XCHG2
+    256 STU
+    32 STU
+    256 STU
+  }>
+  $AppContract$_load PROCINLINE:<{
+    256 LDU
+    32 LDU
+    256 LDU
+    3 -ROLL
+  }>
+  $Context$_get_value PROCINLINE:<{
+    s1 s3 XCHG
+    3 BLKDROP
+  }>
+  $BorrowContract$init$_store PROCINLINE:<{
+    s3 s4 XCHG2
+    STSLICE
+    256 STU
+    STSLICE
+    SWAP
+    NEWC
+    257 PUSHINT
+    STIX
+    STBREFR
+  }>
+  $User$init$_store PROCINLINE:<{
+    s0 s2 XCHG
+    STSLICE
+    STSLICE
+  }>
+  $BorrowPool$init$_store PROCINLINE:<{
+    s0 s2 XCHG
+    257 PUSHINT
+    STIX
+    STSLICE
+  }>
+  $CompensationPool$init$_store PROCINLINE:<{
+    s0 s2 XCHG
+    257 PUSHINT
+    STIX
+    STSLICE
+  }>
+  $AppContract$_contract_init PROCINLINE:<{
+    1 PUSHINT
+    0 PUSHINT
+    34266914862605588507594995374584153816154521013833904446998141995886007185266 PUSHINT
+  }>
+  $AppContract$_contract_load PROCINLINE:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_child_contract_codes SETGLOB
+    1 LDI
+    SWAP
+    IF:<{
+      $AppContract$_load INLINECALLDICT
+      1 3 BLKDROP2
+    }>ELSE<{
+      DROP
+      $AppContract$_contract_init INLINECALLDICT
+    }>
+  }>
+  $AppContract$_contract_store PROCINLINE:<{
+    NEWC
+    __tact_child_contract_codes GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    3 -ROLL
+    $AppContract$_store INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $Cell$_fun_asSlice PROCINLINE:<{
+        CTOS
+  }>
+  $global_newAddress PROCINLINE:<{
+        NEWC
+    4 PUSHINT
+    SWAP
+    3 STU
+    s1 s2 XCHG
+    8 STI
+    256 STU
+        ENDC
+    $Cell$_fun_asSlice INLINECALLDICT
+  }>
+  $global_contractAddressExt PROCINLINE:<{
+        s0 PUSH HASHCU // `data` hash
+        s2 PUSH HASHCU // `code` hash
+        SWAP2
+        CDEPTH         // `data` depth
+        SWAP
+        CDEPTH         // `code` depth
+        131380 INT     // (2 << 16) | (1 << 8) | 0x34
+        // Group 2: Composition of the Builder
+        NEWC
+        24 STU  // store refs_descriptor | bits_descriptor | data
+        16 STU  // store depth_descriptor for `code`
+        16 STU  // store depth_descriptor for `data`
+        256 STU // store `code` hash
+        256 STU // store `data` hash
+        // Group 3: SHA256 hash of the resulting Builder
+        ONE HASHEXT_SHA256
+    $global_newAddress INLINECALLDICT
+  }>
+  $global_contractAddress PROCINLINE:<{
+    0 PUSHINT
+    -ROT
+    $global_contractAddressExt INLINECALLDICT
+  }>
+  $SendParameters$_constructor_to_value_code_data_body PROCINLINE:<{
+    0 PUSHINT
+    s4 s5 XCHG2
+    TRUE
+  }>
+  $User$_init_child PROCREF:<{
+    __tact_child_contract_codes GETGLOB
+    CTOS
+    LDDICT
+    DROP
+    DUP
+    57900 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    NEWDICT
+    s2 PUSH
+    21538 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    21538 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    42506 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    42506 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    55931 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    55931 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s0 s2 XCHG
+    33759 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    s1 s2 XCHG
+    33759 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    SWAP
+    NEWC
+    STDICT
+    STBREFR
+    FALSE
+    SWAP
+    1 STI
+    2SWAP
+    $User$init$_store INLINECALLDICT
+    ENDC
+  }>
+  $global_login PROCREF:<{
+    -ROT
+    $User$_init_child INLINECALLDICT
+    2DUP
+    $global_contractAddress INLINECALLDICT
+    s0 s3 XCHG
+    ISNULL
+    NOT
+    IFJMP:<{
+      20000000 PUSHINT
+          <b b> PUSHREF // Pure Fift: "<b" creates a builder, "b>" turns it into a cell at compile time
+      s4 PUSH
+      s4 s1 s4 XCHG3
+      s3 s3 XCHG2
+      $SendParameters$_constructor_to_value_code_data_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+    }>
+    2DROP
+  }>
+  $StateInit$_constructor_code_data PROCINLINE:<{
+  }>
+  $global_getWalletAddress PROCREF:<{
+        NEWC
+    791288306 PUSHINT
+    SWAP
+    32 STU
+    256 STI
+    0 PUSHINT
+    SWAP
+    1 STU
+        ENDC
+        NEWC
+        ENDC
+    $StateInit$_constructor_code_data INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $SendParameters$_constructor_to_value_mode_body PROCINLINE:<{
+    2SWAP
+    PUSHNULL
+    PUSHNULL
+    s0 s0 s3 XCHG3
+    TRUE
+  }>
+  $ChangeVal$_constructor_val_newVal_initiator PROCINLINE:<{
+  }>
+  $BorrowContract$_init_child PROCREF:<{
+    __tact_child_contract_codes GETGLOB
+    CTOS
+    LDDICT
+    DROP
+    DUP
+    55931 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    NEWDICT
+    s2 PUSH
+    21538 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    21538 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    42506 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    42506 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    57900 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    57900 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s0 s2 XCHG
+    33759 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    s1 s2 XCHG
+    33759 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    SWAP
+    NEWC
+    STDICT
+    STBREFR
+    FALSE
+    SWAP
+    1 STI
+    4 2 BLKSWAP
+    $BorrowContract$init$_store INLINECALLDICT
+    ENDC
+  }>
+  $BorrowPool$_init_child PROCREF:<{
+    __tact_child_contract_codes GETGLOB
+    CTOS
+    LDDICT
+    DROP
+    DUP
+    33759 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    NEWDICT
+    s2 PUSH
+    21538 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    21538 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    57900 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    57900 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    42506 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    42506 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s0 s2 XCHG
+    55931 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    s1 s2 XCHG
+    55931 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    SWAP
+    NEWC
+    STDICT
+    STBREFR
+    FALSE
+    SWAP
+    1 STI
+    2SWAP
+    $BorrowPool$init$_store INLINECALLDICT
+    ENDC
+  }>
+  $CompensationPool$_init_child PROCREF:<{
+    __tact_child_contract_codes GETGLOB
+    CTOS
+    LDDICT
+    DROP
+    DUP
+    21538 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    NEWDICT
+    s2 PUSH
+    42506 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    42506 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    33759 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    33759 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s2 PUSH
+    57900 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    57900 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    s0 s2 XCHG
+    55931 PUSHINT
+    __tact_dict_get_code INLINECALLDICT
+    s1 s2 XCHG
+    55931 PUSHINT
+    SWAP
+    __tact_dict_set_code INLINECALLDICT
+    NEWC
+    SWAP
+    NEWC
+    STDICT
+    STBREFR
+    FALSE
+    SWAP
+    1 STI
+    2SWAP
+    $CompensationPool$init$_store INLINECALLDICT
+    ENDC
+  }>
+  $AppContract$_fun_usersData PROCREF:<{
+        MYADDR
+    $User$_init_child INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $AppContract$_fun_borrowPools PROCREF:<{
+        MYADDR
+    $BorrowPool$_init_child INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $AppContract$_fun_compPools PROCREF:<{
+        MYADDR
+    $CompensationPool$_init_child INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $AppContract$_fun_seqno PROCREF:<{
+    OVER
+  }>
+  $CheckTime$_constructor_ PROCINLINE:<{
+    NIL
+  }>
+  $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow PROCINLINE:<{
+    s3 s4 XCHG
+  }>
+  $SendParameters$_constructor_to_value_body PROCINLINE:<{
+    0 PUSHINT
+    PUSHNULL
+    s4 s2 XCHG2
+    PUSHNULL
+    s4 s2 XCHG2
+    TRUE
+  }>
+  $InitBorrowPool$_constructor_name_maxTime PROCINLINE:<{
+  }>
+  $UpdateEarn$_constructor_sender PROCINLINE:<{
+  }>
+  $Withdraw$_constructor_from_from2_amount_to1 PROCINLINE:<{
+  }>
+  $Deposit$_constructor_id_sender PROCINLINE:<{
+  }>
+  $InitCompensationPool$_constructor_name_maxTime PROCINLINE:<{
+  }>
+  $Update$_constructor_sender PROCINLINE:<{
+  }>
+  $DepositToComp$_constructor_id_sender PROCINLINE:<{
+  }>
+  $Request$_constructor_id_user PROCINLINE:<{
+  }>
+  $Approve$_constructor_id_user_sender_balance PROCINLINE:<{
+  }>
+  $Decline$_constructor_id_user_sender_balance PROCINLINE:<{
+  }>
+  $Repay$_constructor_id PROCINLINE:<{
+  }>
+  %usersData PROC:<{
+    $AppContract$_contract_load INLINECALLDICT
+    3 ROLL
+    $AppContract$_fun_usersData INLINECALLDICT
+    3 1 BLKDROP2
+  }>
+  %borrowPools PROC:<{
+    $AppContract$_contract_load INLINECALLDICT
+    3 ROLL
+    $AppContract$_fun_borrowPools INLINECALLDICT
+    3 1 BLKDROP2
+  }>
+  %compPools PROC:<{
+    $AppContract$_contract_load INLINECALLDICT
+    3 ROLL
+    $AppContract$_fun_compPools INLINECALLDICT
+    3 1 BLKDROP2
+  }>
+  %seqno PROC:<{
+    $AppContract$_contract_load INLINECALLDICT
+    $AppContract$_fun_seqno INLINECALLDICT
+    3 1 BLKDROP2
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    2 PUSHINT
+    SDSKIPFIRST
+    1 LDI
+    1 LDI
+    LDMSGADDR
+    OVER
+    s3 s4 XCHG
+    s6 s6 XCHG2
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $AppContract$_contract_load INLINECALLDICT
+    s0 s4 XCHG
+    IFJMP:<{
+      4 BLKDROP
+    }>
+    0 PUSHINT
+    s3 PUSH
+    SBITS
+    DUP
+    31 GTINT
+    IF:<{
+      NIP
+      s0 s3 XCHG
+      32 LDU
+      s0 s4 XCHG
+    }>
+    OVER
+    2793874247 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      LDMSGADDR
+      16 LDU
+      16 LDU
+      DROP
+          MYADDR
+      s1 s3 XCHG
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s3 s0 s3 XCHG3
+      $BorrowContract$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      2 PUSHINT
+      $CheckTime$_constructor_ INLINECALLDICT
+      NEWC
+      $CheckTime$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    1592348451 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s2 POP
+      56619 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      20000000 PUSHINT
+      GREATER
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      1 PUSHINT
+      $global_login INLINECALLDICT
+      DROP
+      __tact_context_get_sender INLINECALLDICT
+          NEWC
+          x{42_} STSLICECONST // .storeUint(0x10, 6)
+          STSLICE          // .storeAddress(to)
+          0 PUSHINT        // 0
+          111 STUR         // .storeUint(0, 111)
+                           // 4 zeros for coins and 107 zeros for lt, fees, etc.
+          ENDC
+          66 PUSHINT       // SendRemainingValue | SendIgnoreErrors
+          SENDRAWMSG
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    490195545 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      64 LDU
+      64 LDU
+      LDVARUINT16
+      1 LDI
+      SWAP
+      IF:<{
+        32 LDU
+        NIP
+      }>ELSE<{
+      }>
+                  b{00} SDBEGINSQ
+                  IF:<{
+                    PUSHNULL
+                  }>ELSE<{
+                    LDMSGADDR
+                    SWAP
+                  }>
+      DROP
+      LDVARUINT16
+      LDVARUINT16
+      LDVARUINT16
+      DROP
+      56619 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      10000000 PUSHINT
+      GEQ
+      THROWANYIFNOT
+          MYADDR
+      s5 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      0 PUSHINT
+      64 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s2 PUSH
+      s7 s10 XCHG
+      s6 s9 XCHG
+      s5 s8 XCHG
+      s10 s4 s3 XCHG3
+      s9 s8 XCHG2
+      $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow INLINECALLDICT
+      NEWC
+      $Borrow$_store_cell INLINECALLDICT
+      s1 s3 s0 XCHG3
+      $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    1366651737 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      LDREF
+      SWAP
+      CTOS
+      SWAP
+      32 LDU
+      DROP
+      s2 PUSH
+      INC
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+          MYADDR
+      s1 s5 XCHG
+      $BorrowPool$_init_child INLINECALLDICT
+      2DUP
+      $global_contractAddress INLINECALLDICT
+      56619 PUSHINT
+      s7 PUSH
+      30000000 PUSHINT
+      SUB
+      0 GTINT
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          NEWC
+      s2 PUSH
+          STSLICER
+      s8 PUSH
+      10000000 PUSHINT
+      SUB
+          STVARUINT16
+          ENDC
+      10000000 PUSHINT
+      3 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s1 s3 s0 XCHG3
+      $ChangeVal$_constructor_val_newVal_initiator INLINECALLDICT
+      NEWC
+      $ChangeVal$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s6 XCHG
+      10000000 PUSHINT
+      SUB
+      s5 s4 XCHG2
+      $InitBorrowPool$_constructor_name_maxTime INLINECALLDICT
+      NEWC
+      $InitBorrowPool$_store_cell INLINECALLDICT
+      s4 s5 XCHG
+      s1 s5 s0 XCHG3
+      $SendParameters$_constructor_to_value_code_data_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    180313183 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      257 PUSHINT
+      LDIX
+                  b{00} SDBEGINSQ
+                  IF:<{
+                    PUSHNULL
+                  }>ELSE<{
+                    LDMSGADDR
+                    SWAP
+                  }>
+      DROP
+      LDVARUINT16
+      DROP
+      41253 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      20000000 PUSHINT
+      GEQ
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s3 s(-1) PUXC
+      $BorrowPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $UpdateEarn$_constructor_sender INLINECALLDICT
+      NEWC
+      $UpdateEarn$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s3 s5 XCHG
+      s1 s4 XCHG
+      $Withdraw$_constructor_from_from2_amount_to1 INLINECALLDICT
+      NEWC
+      $Withdraw$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    507992258 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      32 LDU
+      DROP
+          MYADDR
+      s1 s(-1) PUXC
+      $BorrowPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $UpdateEarn$_constructor_sender INLINECALLDICT
+      NEWC
+      $UpdateEarn$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      28284 PUSHINT
+      SWAP
+      20000000 PUSHINT
+      SUB
+      0 GTINT
+      THROWANYIFNOT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      10000000 PUSHINT
+      SUB
+      __tact_context_get_sender INLINECALLDICT
+      s1 s3 XCHG
+      $Deposit$_constructor_id_sender INLINECALLDICT
+      NEWC
+      $Deposit$_store_cell INLINECALLDICT
+      s1 s2 XCHG
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    2604694397 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      LDREF
+      SWAP
+      CTOS
+      SWAP
+      32 LDU
+      DROP
+      s2 PUSH
+      INC
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+          MYADDR
+      s1 s5 XCHG
+      $CompensationPool$_init_child INLINECALLDICT
+      2DUP
+      $global_contractAddress INLINECALLDICT
+      56619 PUSHINT
+      s7 PUSH
+      30000000 PUSHINT
+      SUB
+      0 GTINT
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          NEWC
+      s2 PUSH
+          STSLICER
+      s8 PUSH
+      10000000 PUSHINT
+      SUB
+          STVARUINT16
+          ENDC
+      10000000 PUSHINT
+      3 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s1 s3 s0 XCHG3
+      $ChangeVal$_constructor_val_newVal_initiator INLINECALLDICT
+      NEWC
+      $ChangeVal$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s6 XCHG
+      10000000 PUSHINT
+      SUB
+      s5 s4 XCHG2
+      $InitCompensationPool$_constructor_name_maxTime INLINECALLDICT
+      NEWC
+      $InitCompensationPool$_store_cell INLINECALLDICT
+      s4 s5 XCHG
+      s1 s5 s0 XCHG3
+      $SendParameters$_constructor_to_value_code_data_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    3292633415 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      257 PUSHINT
+      LDIX
+                  b{00} SDBEGINSQ
+                  IF:<{
+                    PUSHNULL
+                  }>ELSE<{
+                    LDMSGADDR
+                    SWAP
+                  }>
+      DROP
+      LDVARUINT16
+      DROP
+      19281 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      30000000 PUSHINT
+      GREATER
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s3 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $Update$_constructor_sender INLINECALLDICT
+      NEWC
+      $Update$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $UpdateEarn$_constructor_sender INLINECALLDICT
+      NEWC
+      $UpdateEarn$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s3 s5 XCHG
+      s1 s4 XCHG
+      $Withdraw$_constructor_from_from2_amount_to1 INLINECALLDICT
+      NEWC
+      $Withdraw$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    2322413052 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      32 LDU
+      DROP
+          MYADDR
+      s1 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $Update$_constructor_sender INLINECALLDICT
+      NEWC
+      $Update$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $UpdateEarn$_constructor_sender INLINECALLDICT
+      NEWC
+      $UpdateEarn$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      28284 PUSHINT
+      OVER
+      30000000 PUSHINT
+      SUB
+      0 GTINT
+      THROWANYIFNOT
+      30000000 PUSHINT
+      SUB
+      __tact_context_get_sender INLINECALLDICT
+      s1 s3 XCHG
+      $DepositToComp$_constructor_id_sender INLINECALLDICT
+      NEWC
+      $DepositToComp$_store_cell INLINECALLDICT
+      s1 s2 XCHG
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    1390358458 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      256 LDU
+      DROP
+      63522 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      30000000 PUSHINT
+      SUB
+      -1 GTINT
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s2 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      s0 s2 XCHG
+      30000000 PUSHINT
+      s0 s2 XCHG
+      $Request$_constructor_id_user INLINECALLDICT
+      NEWC
+      $Request$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    1599388651 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      257 PUSHINT
+      LDIX
+                  b{00} SDBEGINSQ
+                  IF:<{
+                    PUSHNULL
+                  }>ELSE<{
+                    LDMSGADDR
+                    SWAP
+                  }>
+      NIP
+      63522 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      40000000 PUSHINT
+      SUB
+      -1 GTINT
+      THROWANYIFNOT
+      7997 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s2 PUSH
+      __tact_slice_eq_bits_nullable_right INLINECALLDICT
+      NOT
+      THROWANYIFNOT
+      __tact_not_null INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s2 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $Update$_constructor_sender INLINECALLDICT
+      NEWC
+      $Update$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $UpdateEarn$_constructor_sender INLINECALLDICT
+      NEWC
+      $UpdateEarn$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      20000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s4 s3 s0 XCHG3
+      0 PUSHINT
+      $Approve$_constructor_id_user_sender_balance INLINECALLDICT
+      NEWC
+      $Approve$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    750137859 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      257 PUSHINT
+      LDIX
+                  b{00} SDBEGINSQ
+                  IF:<{
+                    PUSHNULL
+                  }>ELSE<{
+                    LDMSGADDR
+                    SWAP
+                  }>
+      NIP
+      63522 PUSHINT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_value INLINECALLDICT
+      40000000 PUSHINT
+      SUB
+      -1 GTINT
+      THROWANYIFNOT
+      10453 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      ROT
+      __tact_slice_eq_bits_nullable_right INLINECALLDICT
+      NOT
+      THROWANYIFNOT
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s2 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $Update$_constructor_sender INLINECALLDICT
+      NEWC
+      $Update$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      10000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      $UpdateEarn$_constructor_sender INLINECALLDICT
+      NEWC
+      $UpdateEarn$_store_cell INLINECALLDICT
+      s2 PUSH
+      -ROT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      20000000 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s4 s3 s0 XCHG3
+      0 PUSHINT
+      $Decline$_constructor_id_user_sender_balance INLINECALLDICT
+      NEWC
+      $Decline$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    1754501411 PUSHINT
+    EQUAL
+    IFJMP:<{
+      2DROP
+      s0 s2 XCHG
+      256 LDU
+      DROP
+      __tact_context_get_sender INLINECALLDICT
+          MYADDR
+      PUSHNULL
+      $global_login INLINECALLDICT
+      0 PUSHINT
+      64 PUSHINT
+      s0 s3 XCHG
+      $Repay$_constructor_id INLINECALLDICT
+      NEWC
+      $Repay$_store_cell INLINECALLDICT
+      s1 s3 s0 XCHG3
+      $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    s4 POP
+    0 EQINT
+    s0 s3 XCHG
+    33 LESSINT
+    s1 s3 XCHG
+    AND
+    IFJMP:<{
+      s0 s2 XCHG
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    3 BLKDROP
+    130 THROW
+  }>
+  recv_external PROC:<{
+    $AppContract$_contract_load INLINECALLDICT
+    s0 s3 XCHG
+    32 LDUQ 130 THROWIFNOT
+    OVER
+    359929327 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      256 LDU
+      LDREF
+      SWAP
+      CTOS
+      SWAP
+      LDREF
+      DROP
+          ACCEPT
+      DUP
+          HASHCU
+      48401 PUSHINT
+      s3 s4 XCPU
+          CHKSIGNU
+      s1 s2 XCHG
+      THROWANYIFNOT
+      SWAP
+      $global_getWalletAddress INLINECALLDICT
+      SWAP
+          CTOS
+      64 LDU
+      64 LDU
+          LDVARUINT16
+          LDMSGADDR
+      NIP
+          LDVARUINT16
+          LDVARUINT16
+          LDVARUINT16
+      DROP
+          MYADDR
+      s5 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      s5 s6 XCHG
+      s4 s6 XCHG
+      s3 s6 XCHG
+      s2 s7 XCHG
+      20000000 PUSHINT
+      0 PUSHINT
+      s8 s9 s3 XCHG3
+      $Borrow$_constructor_idBorrow_idComp_amount_to_time_fcc_balanceComp_balanceBorrow INLINECALLDICT
+      NEWC
+      $Borrow$_store_cell INLINECALLDICT
+      s1 s2 XCHG
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      ROT
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    OVER
+    753189113 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      256 LDU
+      LDREF
+      SWAP
+      CTOS
+      SWAP
+      LDREF
+      DROP
+          ACCEPT
+      DUP
+          HASHCU
+      48401 PUSHINT
+      s3 s4 XCPU
+          CHKSIGNU
+      s1 s2 XCHG
+      THROWANYIFNOT
+      SWAP
+      $global_getWalletAddress INLINECALLDICT
+      SWAP
+          CTOS
+      256 LDU
+      DROP
+          MYADDR
+      s1 s2 XCHG
+      PUSHNULL
+      $global_login INLINECALLDICT
+          MYADDR
+      s2 s(-1) PUXC
+      $CompensationPool$_init_child INLINECALLDICT
+      $global_contractAddress INLINECALLDICT
+      s0 s2 XCHG
+      30000000 PUSHINT
+      s0 s2 XCHG
+      $Request$_constructor_id_user INLINECALLDICT
+      NEWC
+      $Request$_store_cell INLINECALLDICT
+      $SendParameters$_constructor_to_value_body INLINECALLDICT
+          NEWC
+          b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+          1 STI               // store `bounce`
+          b{000} STSLICECONST // store bounced = false and src = addr_none
+          STSLICE             // store `to`
+          SWAP
+          STGRAMS             // store `value`
+          105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+          STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+          // → Stack state
+          // s0: Builder
+          // s1: `data`
+          // s2: `code`
+          // s3: `body`
+          // s4: `mode`
+          // Group 2: Placing the Builder after code and data, then checking those for nullability
+          s2 XCHG0
+          DUP2
+          ISNULL
+          SWAP
+          ISNULL
+          AND
+          // → Stack state
+          // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+          // s1: `code`
+          // s2: `data`
+          // s3: Builder
+          // s4: `body`
+          // s5: `mode`
+          // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+          <{
+              DROP2 // drop `data` and `code`, since either of those is null
+              b{0} STSLICECONST
+          }> PUSHCONT
+          // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+          <{
+              // _ split_depth:(Maybe (## 5))
+              //   special:(Maybe TickTock)
+              //   code:(Maybe ^Cell)
+              //   data:(Maybe ^Cell)
+              //   library:(Maybe ^Cell)
+              // = StateInit;
+              ROT                // place message Builder on top
+              b{10} STSLICECONST // store Maybe = true, Either = false
+              // Start composing inlined StateInit
+              b{00} STSLICECONST // store split_depth and special first
+              STDICT             // store code
+              STDICT             // store data
+              b{0} STSLICECONST  // store library
+          }> PUSHCONT
+          // Group 3: IFELSE that does the branching shown above
+          IFELSE
+          // → Stack state
+          // s0: Builder
+          // s1: null or StateInit
+          // s2: `body`
+          // s3: `mode`
+          // Group 4: Finalizing the message
+          STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+          ENDC
+          // → Stack state
+          // s0: Cell
+          // s1: `mode`
+          // Group 5: Sending the message, with `mode` on top
+          SWAP
+          SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+      ROT
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    SWAP
+    2963964483 PUSHINT
+    EQUAL
+    IFJMP:<{
+      LDREF
+      SWAP
+      CTOS
+      SWAP
+      LDREF
+      DROP
+          ACCEPT
+      DUP
+          HASHCU
+      s0 s2 s5 XC2PU
+          CHKSIGNU
+      44371 PUSHINT
+      SWAP
+      THROWANYIFNOT
+          CTOS
+      32 LDU
+      17654 PUSHINT
+      s2 s3 XCPU
+      EQUAL
+      s1 s2 XCHG
+      THROWANYIFNOT
+      256 LDU
+      9 PUSHPOW2
+      LDSLICEX
+      DROP
+          NEWC
+          ENDC
+          HASHCU
+          NEWC
+      16 PUSHPOW2DEC
+      SWAP
+      16 STU
+      1684108385 PUSHINT
+      SWAP
+      32 STU
+      256 STU
+          ENDC
+          HASHCU
+      s1 s2 XCPU
+          CHKSIGNU
+      38055 PUSHINT
+      SWAP
+      THROWANYIFNOT
+          ACCEPT
+      $global_getWalletAddress INLINECALLDICT
+      SWAP
+      INC
+          MYADDR
+      s1 s2 XCHG
+      1 PUSHINT
+      $global_login INLINECALLDICT
+      DROP
+      ROT
+      $AppContract$_contract_store INLINECALLDICT
+    }>
+    4 BLKDROP
+    130 THROW
+  }>
+  __tact_selector_hack PROC:<{
+    @atend @ 1 {
+            execute current@ context@ current!
+            {
+                // The core idea of this function is to save gas by avoiding unnecessary dict jump, when recv_internal/recv_external is called
+                // We want to extract recv_internal/recv_external from the dict and select needed function
+                // not by jumping to the needed function by it's index, but by using usual IF statements.
+                }END> b> // Close previous builder, now we have a cell of previous code on top of the stack
+                <{ // Start of the new code builder
+                    SETCP0
+                    // Swap the new code builder with the previous code, now we have previous code on top of the stack
+                    swap
+                    // Transform cell to slice and load first ref from the previous code, now we have the dict on top of the stack
+                    <s ref@
+                    // Extract the recv_external from the dict
+                    dup -1 swap @procdictkeylen idict@ { "internal shortcut error" abort } ifnot
+                    swap
+                    // Extract the recv_internal from the dict
+                    dup 0 swap @procdictkeylen idict@ { "internal shortcut error" abort } ifnot
+                    swap
+                    // Delete the recv_internal from the dict
+                    0 swap @procdictkeylen idict- drop
+                    // Delete the recv_external from the dict (it's okay if it's not there)
+                    -1 swap @procdictkeylen idict- drop
+                    // Delete the __tact_selector_hack from the dict
+                    65535 swap @procdictkeylen idict- drop
+                    // Bring the code builder from the bottom of the stack
+                    // because if recv_external extraction is optional, and the number of elements on the stack is not fixed
+                    depth 1- roll
+                    // Swap with the dict from which we extracted recv_internal and (maybe) recv_external
+                    swap
+                    // Check if the dict is empty
+                    dup null?
+                    // Store a copy of this flag in the bottom of the stack
+                    dup depth 1- -roll
+                    {
+                        // If the dict is empty, just drop it (it will be null if it's empty)
+                        drop
+                    }
+                    {
+                        // If the dict is not empty, prepare continuation to be stored in c3
+                        <{
+                            // Save this dict as first ref in this continuation, it will be pushed in runtime by DICTPUSHCONST
+                            swap @procdictkeylen DICTPUSHCONST
+                            // Jump to the needed function by it's index
+                            DICTIGETJMPZ
+                            // If such key is not found, throw 11 along with the key as an argument
+                            11 THROWARG
+                        }> PUSHCONT
+                        // Store the continuation in c3
+                        c3 POP
+                    } cond
+                    // Function id is on top of the (runtime) stack
+                    DUP IFNOTJMP:<{
+                        // place recv_internal here
+                        DROP swap @addop
+                    }>
+                    DUP INC IFNOTJMP:<{
+                        // place recv_external here
+                        DROP swap @addop
+                    }>
+                    // Bring back the flag, indicating if the dict is empty or not from the bottom of the stack
+                    depth 1- roll
+                    {
+                        // If the dict is empty, throw 11
+                        11 THROWARG
+                    }
+                    {
+                        // If the dict is not empty, jump to continuation from c3
+                        c3 PUSH JMPX
+                    } cond
+                }> b>
+            } : }END>c
+            current@ context! current!
+        } does @atend !
+  }>
+}END>c

@@ -8,18 +8,15 @@ message AddTelegramId {
 message ChangeVal {
     val: Int as uint8;
     newVal: Cell;
-}
-message SendData {
-    val: Int as uint8;
-    data: Cell;
+    initiator: Address;
 }
 contract RequestContract with Deployable {
     address: Address;
     pool: Int as uint256;
     app: Address;
 
-    init(address: Address, pool: Int as uint256, app: Address) {
-        self.address = address;
+    init(addressUser: Address, pool: Int as uint256, app: Address) {
+        self.address = addressUser;
         self.pool = pool;
         self.app = app;
     }
@@ -27,33 +24,31 @@ contract RequestContract with Deployable {
     receive() {}
 
     receive(msg: Approve) {
-        let init: StateInit = initOf CompensationPool(msg.id, self.app);
-        let childAddress: Address = contractAddress(init);
-        require(childAddress == sender(), "Not enought rights");
+        let loginAddress = login(msg.sender!!, self.app, null);
+        require(loginAddress == sender(), "Not enought rights");
         let data: Cell = beginCell()
             .storeAddress(msg.user!!) // первое число
             .storeUint(self.pool, 256)
             .endCell();
         send(SendParameters {
             to: self.address,
-            value: ton("0.05"),
+            value: ton("0.01"),
             body: ChangeVal {
                 val: 4,
                 newVal: data,
+                initiator: msg.sender!!,
             }.toCell(),
         });
         send(SendParameters {
-            to: sender(),
+            to: msg.sender!!,
             value: 0,
             mode: SendRemainingBalance + SendDestroyIfZero,
-            body: "Contract destroyed".asComment(),
         });
     }
 
     receive(msg: Decline) {
-        let init: StateInit = initOf CompensationPool(msg.id, self.app);
-        let childAddress: Address = contractAddress(init);
-        require(childAddress == sender(), "Not enought rights");
+        let loginAddress = login(msg.sender!!, self.app, null);
+        require(loginAddress == sender(), "Not enought rights");
         let data: Cell = beginCell()
             .storeAddress(msg.user!!) // первое число
             .storeUint(self.pool, 256)
@@ -128,18 +123,19 @@ contract BorrowContract with Deployable {
     }
 }
 contract User with Deployable {
-    address: Address;
-    telegramId: Int?;
+    addressUser: Address;
     rating: Int as int257;
     app: Address;
     debts: map<Int as uint32, Debt>;
     investedIn: map<Address, CompPoolData>;
     compensationPools: map<Int as uint256, Address>;
     debtId: Int as uint32 = 0;
+    isDeployed: Bool;
 
-    init(address: Address, app: Address) {
+    init(addressUser: Address, app: Address) {
         self.app = app;
-        self.address = address;
+        self.isDeployed = false;
+        self.addressUser = addressUser;
         self.rating = 0;
         self.debts = emptyMap();
         self.investedIn = emptyMap();
@@ -147,89 +143,120 @@ contract User with Deployable {
     }
 
     receive(msg: Approve) {
-        require(self.investedIn.get(sender())!!.balance >= ton("20"), "You dont have enought rights in this pool");
-        require(sender() == self.app, "Not enough rights");
-        // Добавить ещё одну проверку на права в пуле
+        let init2: StateInit = initOf CompensationPool(msg.id, self.app);
+        let compPool: Address = contractAddress(init2);
+        require(sender() == compPool, "Not enought rights");
+        require(null != self.investedIn.get(sender()), "Not enough rights");
+        //ПРОВЕРИТЬ
+        let procent: Int = (self.investedIn.get(sender())!!.balance * 100) / msg.balance;
+        require(procent >= 70, "You dont have enought rights in this pool");
         let init: StateInit = initOf RequestContract(msg.user!!, msg.id, self.app);
         let requestContract: Address = contractAddress(init);
         let user1: Address = msg.user!!;
         send(SendParameters {
             to: requestContract,
-            value: context().value,
-            mode: SendIgnoreErrors,
+            value: 0,
+            mode: SendRemainingValue,
             body: Approve {
                 id: msg.id,
                 user: user1,
+                sender: msg.sender,
+                balance: msg.balance,
             }.toCell(),
         });
     }
 
     receive(msg: Decline) {
-        require(self.investedIn.get(sender())!!.balance >= ton("20"), "You dont have enought rights in this pool");
-        let init: StateInit = initOf CompensationPool(msg.id, self.app);
+        let init2: StateInit = initOf CompensationPool(msg.id, self.app);
+        let compPool: Address = contractAddress(init2);
+        require(sender() == compPool, "Not enought rights");
+        require(null != self.investedIn.get(sender()), "Not enough rights");
+        //ПРОВЕРИТЬ
+        let procent: Int = (self.investedIn.get(sender())!!.balance * 100) / msg.balance;
+        require(procent >= 70, "You dont have enought rights in this pool");
+        let init: StateInit = initOf RequestContract(msg.user!!, msg.id, self.app);
         let requestContract: Address = contractAddress(init);
         let user1: Address = msg.user!!;
         send(SendParameters {
             to: requestContract,
-            value: context().value,
-            mode: SendIgnoreErrors,
+            value: 0,
+            mode: SendRemainingValue,
             body: Decline {
                 id: msg.id,
                 user: user1,
+                sender: msg.sender,
+                balance: msg.balance,
             }.toCell(),
         });
     }
 
     receive(msg: Borrow) {
-        let init: StateInit = initOf BorrowContract(myAddress(), msg.idComp, self.app, self.debtId);
-        let address: Address = contractAddress(init);
         require(self.compensationPools.get(msg.idComp) != null, "You must obtain permission from this Compensation Pool.");
         let commision: Int = (msg.amount * 10) / 100;
-        let sum: Int = msg.amount + commision - ton("0.15");
+        // 0.055
+        let sum: Int = msg.amount + commision;
         if (self.rating < 0) { require(sum < ton("2"), "Your rating only allows you to take less than 2") }
-        else if (self.rating >= 0 && self.rating < 20) { require(sum <= ton("5"), "Your rating only allows you to take less than 2") }
+        else if (self.rating >= 0 && self.rating < 20) { require(sum <= ton("15"), "Your rating only allows you to take less than 2") }
+        else if (self.rating >= 20 && self.rating < 50) { require(sum <= ton("50"), "Your rating only allows you to take less than 2") }
+        else if (self.rating >= 50 && self.rating < 80) { require(sum <= ton("100"), "Your rating only allows you to take less than 2") }
+        // ЧТО ЛУЧШЕ Залог, Запрет суммы
+        // ПРОВЕРИТЬ
         let debt: Debt = Debt { sum, timetoreturn: msg.time!!, borrowPool: msg.idBorrow, compPool: msg.idComp, commision, fcc: msg.fcc };
         self.debtId = self.debtId + 1;
         self.debts.set(self.debtId, debt);
+        let init: StateInit = initOf BorrowContract(myAddress(), msg.idComp, self.app, self.debtId);
+        let address: Address = contractAddress(init);
+        self.compensationPools.set(msg.idComp, null);
         send(SendParameters {
             to: address,
-            value: ton("0.05"),
-            mode: SendIgnoreErrors,
+            value: ton("0.02"),
             code: init.code,
             data: init.data, // Тело сообщения
-        });
-        send(SendParameters {
-            to: address,
-            value: ton("0.05"),
-            mode: SendIgnoreErrors,
             body: InitBorrow {
                 endTime: msg.time!!,
                 sum,
             }.toCell(),
         });
+        let init2: StateInit = initOf CompensationPool(msg.idComp, self.app);
+        let address2: Address = contractAddress(init2);
+        let init3: StateInit = initOf BorrowPool(msg.idBorrow, self.app);
+        let addressBorrow: Address = contractAddress(init3);
+        send(SendParameters {
+            to: address2,
+            value: ton("0.01"),
+            body: ChangeBorrow {
+                balance: msg.balanceComp,
+                id: self.debtId,
+            }.toCell(),
+        });
+        send(SendParameters {
+            to: addressBorrow,
+            value: ton("0.01"),
+            body: ChangeBorrow {
+                balance: msg.balanceComp,
+                id: self.debtId,
+            }.toCell(),
+        });
+        // Доделать изменение map
         send(SendParameters {
             to: msg.to!!,
-            value: msg.amount,
-            mode: SendPayGasSeparately, // Тело сообщения
+            value: msg.amount - ton("0.05"),
         });
     }
 
-    receive(msg: AddTelegramId) {
-        require(sender() == self.app, "Not enought rights!");
-        self.telegramId = msg.id;
-    }
-
     receive(msg: Overdue) {
+        // НЕ ВЫПОЛНЯЕТСЯ
         let debt: Debt = self.debts.get(msg.id)!!;
         let init: StateInit = initOf CompensationPool(debt.compPool, self.app);
         let compensationpoolAddress: Address = contractAddress(init);
-        require(compensationpoolAddress == sender(), "You must obtain permission from the Compensation Pool.");
+        require(compensationpoolAddress == sender(), "Not enought rights");
         let init2: StateInit = initOf BorrowPool(debt.borrowPool, self.app);
         let borrowpoolAddress = contractAddress(init2);
         let toComp: Int = (debt.commision * 60) / 100;
         let toBorrow: Int = debt.sum - toComp;
+        let toCreator: Int = (debt.commision * 10) / 100;
         self.debts.set(msg.id, null);
-        self.rating = self.rating - 2 * debt.sum;
+        self.rating = self.rating - (debt.sum * 10);
         send(SendParameters {
             to: compensationpoolAddress,
             value: toComp,
@@ -246,17 +273,27 @@ contract User with Deployable {
         });
     }
 
-    receive() {}
+    receive() {
+        if (self.isDeployed) {
+            send(SendParameters {
+                to: sender(),
+                value: 0,
+                mode: SendRemainingValue,
+            });
+        } else {
+            self.isDeployed = true;
+        }
+    }
 
     receive(msg: Repay) {
         require(sender() == self.app, "Not enought rights!");
         let debt = self.debts.get(msg.id)!!;
         if (debt.sum - context().value > 0) {
-            let init: StateInit = initOf BorrowContract(self.address, debt.borrowPool, self.app, msg.id);
+            let init: StateInit = initOf BorrowContract(self.addressUser, debt.borrowPool, self.app, msg.id);
             let address: Address = contractAddress(init);
             send(SendParameters {
                 to: address,
-                value: ton("0.05"),
+                value: ton("0.01"),
                 mode: SendIgnoreErrors,
                 body: Changesum {
                     sum: context().value,
@@ -270,7 +307,8 @@ contract User with Deployable {
             let borrowpoolAddress = contractAddress(init2);
             let toComp: Int = (debt.commision * 60) / 100;
             let toBorrow: Int = debt.sum - toComp;
-            self.rating = self.rating + 2 * debt.sum;
+            //let toCreator: Int = (debt.commision * 10) / 100;
+            self.rating = self.rating + (debt.sum / 1000);
             send(SendParameters {
                 to: compensationpoolAddress,
                 value: toComp,
@@ -285,19 +323,12 @@ contract User with Deployable {
                     id: msg.id,
                 }.toCell(),
             });
+            send(SendParameters {
+                to: self.addressUser,
+                value: 0,
+                mode: SendRemainingValue,
+            });
         }
-    }
-
-    receive(msg: Unfreeze) {
-        let init: StateInit = initOf CompensationPool(msg.id, self.app);
-        let address1: Address = contractAddress(init);
-        let v: Int = msg.v;
-        require(self.investedIn.get(address1) != null, "");
-        let data: CompPoolData = self.investedIn.get(address1)!!;
-        let newFreezed: Int = data.freezed - (data.freezed / msg.fcc);
-        let newBalance = data.balance + (data.freezed - newFreezed);
-        let struct: CompPoolData = CompPoolData { v, freezed: newFreezed, address: address1, balance: newBalance, earnCoff: data.earnCoff, freezeCoff: data.freezeCoff };
-        self.investedIn.set(address1, struct);
     }
 
     receive(msg: ChangeVal) {
@@ -307,11 +338,20 @@ contract User with Deployable {
         } else if (msg.val == 3) {
             let s: Slice = msg.newVal.asSlice();
             let firstValue: Address = s.loadAddress();
+            require(sender() == self.app || sender() == firstValue, "Insufficient rights!");
             let secondValue: Int = s.loadCoins();
+            let pool: CompPoolData = CompPoolData { v: 0, freezed: 0, address: firstValue, balance: secondValue, earnCoff: 0, freezeCoff: 0, balanceUserAfter: secondValue };
             if (self.investedIn.get(firstValue) != null) {
-                secondValue = self.investedIn.get(firstValue)!!.balance + secondValue;
+                let oldVal: CompPoolData = self.investedIn.get(firstValue)!!;
+                secondValue = oldVal.balance + secondValue;
+                pool.v = oldVal.v;
+                pool.freezed = oldVal.freezed;
+                pool.address = oldVal.address;
+                pool.balance = secondValue;
+                pool.earnCoff = oldVal.earnCoff;
+                pool.freezeCoff = oldVal.freezeCoff;
+                pool.balanceUserAfter = oldVal.balanceUserAfter;
             }
-            let pool: CompPoolData = CompPoolData { v: s.loadUint(32), freezed: 0, address: firstValue, balance: secondValue, earnCoff: s.loadUint(32), freezeCoff: s.loadUint(32) };
             self.investedIn.set(firstValue, pool);
         } else if (msg.val == 4) {
             let s: Slice = msg.newVal.asSlice();
@@ -323,34 +363,67 @@ contract User with Deployable {
             self.compensationPools.set(secondValue, firstValue);
         } else if (msg.val == 6) {
             let s: Slice = msg.newVal.asSlice();
-            let firstValue: Int = s.loadUint(32);
+            let firstValue: Int = s.loadUint(32); // id
+            let v: Int = s.loadUint(32); // version
+            let secondValue: Int = s.loadUint(64); // fcc 458333333
             let init: StateInit = initOf CompensationPool(firstValue, self.app);
             let address1: Address = contractAddress(init);
-            require(self.investedIn.get(address1) != null, "");
-            let secondValue: Int = s.loadCoins();
-            let v: Int = s.loadUint(32);
-            require(self.investedIn.get(address1)!!.v != v, "");
-            let balance: Int = self.investedIn.get(address1)!!.balance;
-            let freezed: Int = self.investedIn.get(address1)!!.freezed;
-            let newBalance: Int = (balance - secondValue * balance) - self.investedIn.get(address1)!!.freezeCoff * balance;
-            let newFreezevalue: Int = self.investedIn.get(address1)!!.freezeCoff + secondValue;
-            let struct: CompPoolData = CompPoolData { v, freezed: freezed + secondValue * balance, address: address1, balance: newBalance, earnCoff: self.investedIn.get(address1)!!.earnCoff, freezeCoff: newFreezevalue };
+            require(self.investedIn.get(address1) != null, "value not found");
+            require(self.investedIn.get(address1)!!.freezeCoff != secondValue, "");
+            //require(self.investedIn.get(address1)!!.v != v, "");
+            let oldData: CompPoolData = self.investedIn.get(address1)!!;
+            let balance: Int = oldData.balance + oldData.freezed;
+            let freezeDelta: Int = secondValue - oldData.freezeCoff;
+            let userFreeze: Int = (balance * freezeDelta) / SCALE;
+            let newBalance: Int = oldData.balance - userFreeze;
+            let newFreeze: Int = oldData.freezed + userFreeze;
+            let struct: CompPoolData = CompPoolData {
+                v,
+                freezed: newFreeze,
+                address: address1,
+                balance: newBalance,
+                earnCoff: oldData.earnCoff,
+                freezeCoff: secondValue,
+                balanceUserAfter: oldData.balanceUserAfter,
+            };
             self.investedIn.set(address1, struct);
         } else if (msg.val == 5) {
             let s: Slice = msg.newVal.asSlice();
-            let firstValue: Int = s.loadUint(32);
-            let init: StateInit = initOf CompensationPool(firstValue, self.app);
-            let address1: Address = contractAddress(init);
-            require(self.investedIn.get(address1) != null, "");
+            let type: Int = s.loadUint(2);
+            let firstValue: Int = s.loadUint(32); // id
+            let v: Int = s.loadUint(32); // v (версия)
             let secondValue: Int = s.loadCoins();
-            let v: Int = s.loadUint(32);
-            require(self.investedIn.get(address1)!!.v != v, "");
-            let balance: Int = self.investedIn.get(address1)!!.balance;
-            let newBalance: Int = (balance + secondValue * balance) - self.investedIn.get(address1)!!.earnCoff * balance;
-            let newEarnValue: Int = self.investedIn.get(address1)!!.earnCoff + secondValue * balance;
-            let struct: CompPoolData = CompPoolData { v, freezed: self.investedIn.get(address1)!!.freezed, address: address1, balance: newBalance, earnCoff: newEarnValue, freezeCoff: self.investedIn.get(address1)!!.freezeCoff };
+            let address1: Address = myAddress(); // Это временное значение
+            if (type == 1) {
+                let init: StateInit = initOf CompensationPool(firstValue, self.app);
+                address1 = contractAddress(init);
+            } else {
+                let init: StateInit = initOf BorrowPool(firstValue, self.app);
+                address1 = contractAddress(init);
+            }
+            require(self.investedIn.get(address1) != null, "value not found");
+            require(self.investedIn.get(address1)!!.earnCoff != secondValue, "");
+            let oldData: CompPoolData = self.investedIn.get(address1)!!;
+            let balance: Int = oldData.balance;
+            let earnDelta: Int = secondValue - oldData.earnCoff;
+            let userEarn: Int = (balance * earnDelta) / SCALE;
+            let newBalance: Int = oldData.balance + userEarn;
+            let struct: CompPoolData = CompPoolData {
+                v,
+                freezed: oldData.freezed,
+                address: address1,
+                balance: newBalance,
+                earnCoff: secondValue, // сохраняем новый acc
+                freezeCoff: oldData.freezeCoff,
+                balanceUserAfter: oldData.balanceUserAfter,
+            };
             self.investedIn.set(address1, struct);
         }
+        send(SendParameters {
+            to: msg.initiator,
+            value: 0,
+            mode: SendRemainingValue,
+        });
     }
 
     receive(msg: Withdraw) {
@@ -362,7 +435,8 @@ contract User with Deployable {
         self.investedIn.set(from, oldValue);
         send(SendParameters {
             to: from,
-            value: ton("0.05"),
+            value: 0,
+            mode: SendRemainingValue,
             body: Withdraw {
                 from: msg.from,
                 from2: from,
@@ -388,4 +462,4 @@ contract User with Deployable {
         return self.compensationPools;
     }
 }
-// ПЕРЕРАБОТАТЬ ЛОГИКУ REQUEST, ДАННЫЕ НЕ ОБНОВЛЯЮТСЯ
+// Места исправлений помечены коментарием РАСПРЕДЕЛЕНИЕ

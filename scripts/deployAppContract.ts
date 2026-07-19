@@ -20,4 +20,5 @@ export async function run(provider: NetworkProvider) {
     );
 
     console.log(`🚀 Транзакция деплоя отправлена на новый адрес!`);
+    console.log(`Новый адрес контракта: ${appContract.address}`);
 }
